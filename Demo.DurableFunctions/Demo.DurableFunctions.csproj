@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AzureFunctionsVersion>V3</AzureFunctionsVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.1.0" />
+        <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+        <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.DurableTask" Version="2.1.1" />
+        <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.DurableTask.Analyzers" Version="0.4.0" />
+        <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="host.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="local.settings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Patterns\Aggregator" />
+      <Folder Include="Patterns\AsyncHTTPApi" />
+      <Folder Include="Patterns\FanOutFanIn" />
+      <Folder Include="Patterns\HumanInteraction" />
+      <Folder Include="Patterns\Monitor" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Patterns\FunctionChaining\TestFunction.cs" />
+    </ItemGroup>
+</Project>
