@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Demo.DurableFunctions.Validators
 {
-    public class RegisterBankCustomerRequestValidator : ModelValidatorBase<RegisterBankCustomerRequest>
+    public class RegisterBankCustomerRequestValidator : ModelValidatorBase<RegisterAccountRequest>
     {
         public RegisterBankCustomerRequestValidator()
         {

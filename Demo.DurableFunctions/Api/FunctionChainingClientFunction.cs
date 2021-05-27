@@ -13,10 +13,11 @@ namespace Demo.DurableFunctions.Api
 {
     public class FunctionChainingClientFunction
     {
+        private const string Orchestrator = nameof(RegisterAccountOrchestrator);
         private readonly IHttpRequestBodyReader requestBodyReader;
-        private readonly IValidator<RegisterBankCustomerRequest> validator;
+        private readonly IValidator<RegisterAccountRequest> validator;
 
-        public FunctionChainingClientFunction(IHttpRequestBodyReader requestBodyReader, IValidator<RegisterBankCustomerRequest> validator)
+        public FunctionChainingClientFunction(IHttpRequestBodyReader requestBodyReader, IValidator<RegisterAccountRequest> validator)
         {
             this.requestBodyReader = requestBodyReader;
             this.validator = validator;
@@ -26,14 +27,14 @@ namespace Demo.DurableFunctions.Api
         public async Task<IActionResult> FunctionChainingAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining")]
             HttpRequestMessage request, [DurableClient] IDurableOrchestrationClient client)
         {
-            var registerBankCustomerRequest = await requestBodyReader.GetModelAsync<RegisterBankCustomerRequest>(request);
+            var registerBankCustomerRequest = await requestBodyReader.GetModelAsync<RegisterAccountRequest>(request);
             var validationResult = await validator.ValidateAsync(registerBankCustomerRequest);
             if (!validationResult.IsValid)
             {
                 return new BadRequestObjectResult(validationResult);
             }
-
-            var instanceId = await client.StartNewAsync(nameof(CustomerAccountHandlerFunction), registerBankCustomerRequest);
+            
+            var instanceId = await client.StartNewAsync(Orchestrator, registerBankCustomerRequest);
             return new OkObjectResult(instanceId);
         }
     }
