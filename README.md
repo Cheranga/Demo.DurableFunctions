@@ -15,6 +15,11 @@
 
 ## Azure durable function concepts
 
+## Azure durable function runtime status
+
+https://docs.microsoft.com/en-us/javascript/api/durable-functions/orchestrationruntimestatus?view=azure-node-latest
+
+
 ## Comparing Azure Durable Functions
 
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-apps-ms-flow-webjobs#compare-azure-functions-and-azure-logic-apps
