@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
 using Demo.DurableFunctions.DTO.Responses;
@@ -15,10 +16,12 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
     {
         private const string CreateCustomer = nameof(CreateCustomerActivity);
         private const string CreateBankAccount = nameof(CreateBankAccountActivity);
+        private readonly IMapper mapper;
         private readonly ILogger<RegisterAccountOrchestrator> logger;
 
-        public RegisterAccountOrchestrator(ILogger<RegisterAccountOrchestrator> logger)
+        public RegisterAccountOrchestrator(IMapper mapper, ILogger<RegisterAccountOrchestrator> logger)
         {
+            this.mapper = mapper;
             this.logger = logger;
         }
 
@@ -49,36 +52,27 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
 
         private async Task<BankAccount> RegisterAndGetBankAccountData(IDurableOrchestrationContext context, RegisterAccountRequest request, string customerId)
         {
-            LogMessage(context, LogLevel.Information, "Registering bank account @{RegisterAccountRequest}", request);
+            Log(context, LogLevel.Information, "Registering bank account @{RegisterAccountRequest}", request);
 
-            var createBankAccountRequest = new CreateBankAccountRequest
-            {
-                CustomerId = customerId,
-                BankAccountType = request.BankAccountType,
-                AccountName = request.AccountName,
-                Amount = request.Deposit
-            };
+            var createBankAccountRequest = mapper.Map<CreateBankAccountRequest>(request);
+            createBankAccountRequest.CustomerId = customerId;
+            
             var bankAccountData = await context.CallActivityWithRetryAsync<BankAccount>(CreateBankAccount, Retry.For<CreateBankAccountException>(), createBankAccountRequest);
-            LogMessage(context, LogLevel.Information, "Successfully registered bank account @{RegisterAccountRequest}", request);
+            Log(context, LogLevel.Information, "Successfully registered bank account @{RegisterAccountRequest}", request);
             return bankAccountData;
         }
 
         private async Task<Customer> RegisterAndGetCustomerData(IDurableOrchestrationContext context, RegisterAccountRequest request)
         {
-            LogMessage(context, LogLevel.Information,"Registering customer @{RegisterCustomerRequest}", request);
-            var createCustomerRequest = new RegisterCustomerRequest
-            {
-                CustomerName = request.CustomerName,
-                CustomerEmail = request.CustomerEmail
-            };
-
+            Log(context, LogLevel.Information,"Registering customer @{RegisterCustomerRequest}", request);
+            var createCustomerRequest = mapper.Map<CreateCustomerRequest>(request);
             var customerData = await context.CallActivityWithRetryAsync<Customer>(CreateCustomer, Retry.For<CreateCustomerException>(), createCustomerRequest);
             
-            LogMessage(context, LogLevel.Information,"Successfully registered customer @{RegisterCustomerRequest}", request);
+            Log(context, LogLevel.Information,"Successfully registered customer @{RegisterCustomerRequest}", request);
             return customerData;
         }
 
-        private void LogMessage(IDurableOrchestrationContext context, LogLevel level, string message, params object[] arguments)
+        private void Log(IDurableOrchestrationContext context, LogLevel level, string message, params object[] arguments)
         {
             if (!context.IsReplaying)
             {

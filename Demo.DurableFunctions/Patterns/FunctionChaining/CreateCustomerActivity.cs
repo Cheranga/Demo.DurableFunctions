@@ -15,7 +15,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
 
-            var registerCustomerRequest = context.GetInput<RegisterCustomerRequest>();
+            var registerCustomerRequest = context.GetInput<CreateCustomerRequest>();
 
             // throw new RegisterCustomerException(registerCustomerRequest.CustomerName, registerCustomerRequest.CustomerEmail);
 

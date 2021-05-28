@@ -16,6 +16,17 @@ namespace Demo.DurableFunctions
 
             RegisterServices(services);
             RegisterValidators(services);
+            RegisterMappers(services);
+        }
+
+        private void RegisterMappers(IServiceCollection services)
+        {
+            var assemblies = new[]
+            {
+                typeof(Startup).Assembly
+            };
+
+            services.AddAutoMapper(assemblies);
         }
 
         private void RegisterServices(IServiceCollection services)
