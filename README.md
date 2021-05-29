@@ -1,5 +1,18 @@
 ## Azure Durable Functions
 
+## TODO
+
+- [x] Deploy the function app -> 1 hour
+- [x] Fan-in/fan-out -> 1 hour
+- [x] Monitor -> 1 hour  
+- [ ] Human interaction -> 1 hour
+- [ ] Aggregator -> 1.5 hours
+- [x] Sub orchestrator -> 1 hour
+- [ ] Documentation -> 2 hours
+- Eternal (conditional or not) orchestrators -> 1 hour
+
+
+
 - Prerequisites
   - [x] Install `Microsoft.Azure.WebJobs.Extensions.DurableTask.Analyzers`
   
@@ -15,43 +28,25 @@
 
 ### Function chaining
 * Asynchronously calling HTTP endpoint
-```mermaid
-sequenceDiagram
-autoNumber
-User -->> API: RegisterBankAccountRequest
-API -->> API: validate request
-  alt is valid?
-    API -->> User: Request accepted
-  else
-    API -->> User: bad request    
-  end
 
-API -->> Orchestrator: register the bank account
-Orchestrator -->> CreateCustomerActivity: create customer
-CreateCustomerActivity -->> Orchestrator: created customer response
-Orchestrator -->> CreateBankAccountActivity: create bank account
-CreateBankAccountActivity -->> Orchestrator: created bank account response
-Orchestrator -->> Orchestrator: Set the response
-```
 * Synchronously calling HTTP endpoint
+
+* Fan-out / Fan-in pattern
+
 ```mermaid
 sequenceDiagram
 autoNumber
-User -->> API: RegisterBankAccountRequest
-API -->> API: validate request
-  alt is valid?
-    API -->> User: Request accepted
-  else
-    API -->> User: bad request    
-  end
-
-API -->> Orchestrator: register the bank account
-Orchestrator -->> CreateCustomerActivity: create customer
-CreateCustomerActivity -->> Orchestrator: created customer response
-Orchestrator -->> CreateBankAccountActivity: create bank account
-CreateBankAccountActivity -->> Orchestrator: created bank account response
-Orchestrator -->> API: RegisterBankAccountResponse
+Blob -->> BlobContainer: BLOB
+BlobContainer -->> RegisterCustomerAccountClient: triggers
+RegisterCustomerAccountClient -->> Orchestrator: start
+Orchestrator -->> ReadBlobActivity: read BLOB
+ReadBlobActivity -->> Orchestrator: customer list
+Orchestrator -->> SubOrchestrator: customer list (portion)
+SubOrchestrator -->> ValidateActivity: validate (fan-out)
+ValidateActivity -->> SubOrchestrator: validation results (fan-in)
+SubOrchestrator -->> PublishRegisterCustomerEvents: publish to ASB (fan-out)
 ```
+
 
 ## Azure durable function concepts
 

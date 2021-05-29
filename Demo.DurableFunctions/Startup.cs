@@ -40,6 +40,7 @@ namespace Demo.DurableFunctions
 
             services.AddSingleton<ICheckVisaService, CheckVisaService>();
             services.AddSingleton<ICheckDriverLicenseService, CheckDriverLicenseService>();
+            services.AddSingleton<IVerifyDocumentsService, VerifyDocumentsService>();
         }
 
         private void RegisterValidators(IServiceCollection services)

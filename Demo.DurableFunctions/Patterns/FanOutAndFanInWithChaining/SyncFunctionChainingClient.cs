@@ -10,18 +10,18 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace Demo.DurableFunctions.Patterns.FanOutAndFanInWithChaining
 {
-    public class SyncFunctionChainingClientFunction
+    public class SyncFunctionChainingClient
     {
         private readonly IRegisterBankAccountService registerBankAccountService;
         private readonly IResponseFormatter<RegisterAccountResponse> responseFormatter;
 
-        public SyncFunctionChainingClientFunction(IRegisterBankAccountService registerBankAccountService, IResponseFormatter<RegisterAccountResponse> responseFormatter)
+        public SyncFunctionChainingClient(IRegisterBankAccountService registerBankAccountService, IResponseFormatter<RegisterAccountResponse> responseFormatter)
         {
             this.registerBankAccountService = registerBankAccountService;
             this.responseFormatter = responseFormatter;
         }
 
-        [FunctionName(nameof(SyncFunctionChainingClientFunction))]
+        [FunctionName(nameof(SyncFunctionChainingClient))]
         public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining/sync")]
             HttpRequestMessage request,
             [DurableClient]IDurableClient client)

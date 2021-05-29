@@ -11,19 +11,19 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace Demo.DurableFunctions.Patterns.FanOutAndFanInWithChaining
 {
-    public class AsyncFunctionChainingClientFunction
+    public class AsyncFunctionChainingClient
     {
         private const string Orchestrator = nameof(RegisterAccountOrchestrator);
         private readonly IHttpRequestBodyReader requestBodyReader;
         private readonly IValidator<RegisterAccountRequest> validator;
 
-        public AsyncFunctionChainingClientFunction(IHttpRequestBodyReader requestBodyReader, IValidator<RegisterAccountRequest> validator)
+        public AsyncFunctionChainingClient(IHttpRequestBodyReader requestBodyReader, IValidator<RegisterAccountRequest> validator)
         {
             this.requestBodyReader = requestBodyReader;
             this.validator = validator;
         }
 
-        [FunctionName(nameof(AsyncFunctionChainingClientFunction))]
+        [FunctionName(nameof(AsyncFunctionChainingClient))]
         public async Task<IActionResult> FunctionChainingAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining/async")]
             HttpRequestMessage request, [DurableClient] IDurableOrchestrationClient client)
         {

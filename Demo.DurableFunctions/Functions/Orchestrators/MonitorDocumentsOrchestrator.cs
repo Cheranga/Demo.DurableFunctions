@@ -1,16 +1,16 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.Functions.Activities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
-namespace Demo.DurableFunctions.Functions.Activities
+namespace Demo.DurableFunctions.Functions.Orchestrators
 {
-    public class MonitorMortgageDocumentsOrchestrator
+    public class MonitorDocumentsOrchestrator
     {
-        [FunctionName(nameof(MonitorMortgageDocumentsOrchestrator))]
+        [FunctionName(nameof(MonitorDocumentsOrchestrator))]
         public async Task<Result> MonitorAsync([OrchestrationTrigger] IDurableOrchestrationContext context)
         {
             var timeout = context.CurrentUtcDateTime.AddSeconds(10);
