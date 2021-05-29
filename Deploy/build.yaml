@@ -30,6 +30,6 @@ steps:
     displayName: Create function app artifact
     artifact: drop
 
-  # - publish: $(Build.Repository.LocalPath)/Deploy/Resources
-  #   displayName: Create ARM template artifacts
-  #   artifact: deploy
+  - publish: $(Build.Repository.LocalPath)/Deploy/Resources
+    displayName: Create ARM template artifacts
+    artifact: deploy
