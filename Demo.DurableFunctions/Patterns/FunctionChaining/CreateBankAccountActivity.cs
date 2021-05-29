@@ -12,7 +12,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
         [FunctionName(nameof(CreateBankAccountActivity))]
         public async Task<BankAccount> CreateBankAccountAsync([ActivityTrigger] IDurableActivityContext context)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(1));
             
             var request = context.GetInput<CreateBankAccountRequest>();
 

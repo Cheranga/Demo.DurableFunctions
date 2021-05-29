@@ -13,7 +13,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
         [FunctionName(nameof(CreateCustomerActivity))]
         public async Task<Customer> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(1));
 
             var registerCustomerRequest = context.GetInput<CreateCustomerRequest>();
 

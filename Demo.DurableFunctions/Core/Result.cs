@@ -1,12 +1,16 @@
+using FluentValidation.Results;
+
 namespace Demo.DurableFunctions.Core
 {
     public class Result<TData>
     {
         public TData Data { get; set; }
 
-        public string Error { get; set; }
+        public string ErrorCode { get; set; }
 
-        public bool Status => string.IsNullOrEmpty(Error);
+        public ValidationResult ValidationResult { get; set; }
+
+        public bool Status => ValidationResult == null || ValidationResult.IsValid;
 
         public static Result<TData> Success(TData data)
         {
@@ -16,11 +20,20 @@ namespace Demo.DurableFunctions.Core
             };
         }
 
-        public static Result<TData> Failure(string error)
+        public static Result<TData> Failure(string errorCode)
+        {
+            return Failure(errorCode, new ValidationResult(new[]
+            {
+                new ValidationFailure(errorCode, errorCode)
+            }));
+        }
+
+        public static Result<TData> Failure(string errorCode, ValidationResult validationResult)
         {
             return new Result<TData>
             {
-                Error = error
+                ErrorCode = errorCode,
+                ValidationResult = validationResult
             };
         }
     }

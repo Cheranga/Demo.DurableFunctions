@@ -13,6 +13,46 @@
 
 ## Azure durable function patterns
 
+### Function chaining
+* Asynchronously calling HTTP endpoint
+```mermaid
+sequenceDiagram
+autoNumber
+User -->> API: RegisterBankAccountRequest
+API -->> API: validate request
+  alt is valid?
+    API -->> User: Request accepted
+  else
+    API -->> User: bad request    
+  end
+
+API -->> Orchestrator: register the bank account
+Orchestrator -->> CreateCustomerActivity: create customer
+CreateCustomerActivity -->> Orchestrator: created customer response
+Orchestrator -->> CreateBankAccountActivity: create bank account
+CreateBankAccountActivity -->> Orchestrator: created bank account response
+Orchestrator -->> Orchestrator: Set the response
+```
+* Synchronously calling HTTP endpoint
+```mermaid
+sequenceDiagram
+autoNumber
+User -->> API: RegisterBankAccountRequest
+API -->> API: validate request
+  alt is valid?
+    API -->> User: Request accepted
+  else
+    API -->> User: bad request    
+  end
+
+API -->> Orchestrator: register the bank account
+Orchestrator -->> CreateCustomerActivity: create customer
+CreateCustomerActivity -->> Orchestrator: created customer response
+Orchestrator -->> CreateBankAccountActivity: create bank account
+CreateBankAccountActivity -->> Orchestrator: created bank account response
+Orchestrator -->> API: RegisterBankAccountResponse
+```
+
 ## Azure durable function concepts
 
 ## Azure durable function runtime status
@@ -23,6 +63,7 @@ https://docs.microsoft.com/en-us/javascript/api/durable-functions/orchestrationr
 ## Comparing Azure Durable Functions
 
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-apps-ms-flow-webjobs#compare-azure-functions-and-azure-logic-apps
+
 
   
 ### References

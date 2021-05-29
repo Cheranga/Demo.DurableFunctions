@@ -31,7 +31,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
             try
             {
                 var request = context.GetInput<RegisterAccountRequest>();
-
+                
                 var customerData = await RegisterAndGetCustomerData(context, request);
                 var bankAccountData = await RegisterAndGetBankAccountData(context, request, customerData.Id);
 

@@ -11,20 +11,20 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace Demo.DurableFunctions.Api
 {
-    public class FunctionChainingClientFunction
+    public class AsyncFunctionChainingClientFunction
     {
         private const string Orchestrator = nameof(RegisterAccountOrchestrator);
         private readonly IHttpRequestBodyReader requestBodyReader;
         private readonly IValidator<RegisterAccountRequest> validator;
 
-        public FunctionChainingClientFunction(IHttpRequestBodyReader requestBodyReader, IValidator<RegisterAccountRequest> validator)
+        public AsyncFunctionChainingClientFunction(IHttpRequestBodyReader requestBodyReader, IValidator<RegisterAccountRequest> validator)
         {
             this.requestBodyReader = requestBodyReader;
             this.validator = validator;
         }
 
-        [FunctionName(nameof(FunctionChainingClientFunction))]
-        public async Task<IActionResult> FunctionChainingAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining")]
+        [FunctionName(nameof(AsyncFunctionChainingClientFunction))]
+        public async Task<IActionResult> FunctionChainingAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining/async")]
             HttpRequestMessage request, [DurableClient] IDurableOrchestrationClient client)
         {
             var registerBankCustomerRequest = await requestBodyReader.GetModelAsync<RegisterAccountRequest>(request);
