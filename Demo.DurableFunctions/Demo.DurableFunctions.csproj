@@ -24,7 +24,6 @@
     <ItemGroup>
       <Folder Include="Patterns\Aggregator" />
       <Folder Include="Patterns\AsyncHTTPApi" />
-      <Folder Include="Patterns\FanOutFanIn" />
       <Folder Include="Patterns\HumanInteraction" />
       <Folder Include="Patterns\Monitor" />
     </ItemGroup>

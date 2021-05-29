@@ -1,6 +1,6 @@
 namespace Demo.DurableFunctions.Models
 {
-    public class Customer
+    public class CustomerData
     {
         public string Id { get; set; }
         public string Email { get; set; }

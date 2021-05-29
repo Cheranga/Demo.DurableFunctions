@@ -46,6 +46,10 @@ namespace Demo.DurableFunctions.ResponseFormatters
                     {
                         StatusCode = (int) (HttpStatusCode.InternalServerError)
                     };
+                case "InvalidVisa":
+                    return new BadRequestObjectResult("According to your VISA this operation cannot proceed");
+                case "InvalidDriverLicense":
+                    return new BadRequestObjectResult("According to your driver license status this operation cannot proceed");
                 default:
                     return new InternalServerErrorResult();
             }

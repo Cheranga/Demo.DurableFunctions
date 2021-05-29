@@ -31,6 +31,9 @@ namespace Demo.DurableFunctions.Mappers
                     model.PartitionKey = $"{request.CustomerId}".ToUpper();
                     model.RowKey = $"{request.BankAccountType}_{model.BankAccountId}".ToUpper();
                 });
+
+            CreateMap<RegisterAccountRequest, CheckVisaRequest>();
+            CreateMap<RegisterAccountRequest, CheckDriverLicenseRequest>();
         }
     }
 }

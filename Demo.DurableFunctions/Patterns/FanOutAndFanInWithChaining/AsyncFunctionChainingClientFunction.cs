@@ -2,13 +2,14 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.Functions.Orchestrators;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 
-namespace Demo.DurableFunctions.Patterns.FunctionChaining
+namespace Demo.DurableFunctions.Patterns.FanOutAndFanInWithChaining
 {
     public class AsyncFunctionChainingClientFunction
     {

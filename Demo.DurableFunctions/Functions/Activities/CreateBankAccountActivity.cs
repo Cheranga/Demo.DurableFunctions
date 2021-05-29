@@ -6,7 +6,7 @@ using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
-namespace Demo.DurableFunctions.Patterns.FunctionChaining
+namespace Demo.DurableFunctions.Functions.Activities
 {   
     public class CreateBankAccountActivity
     {
@@ -18,7 +18,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
         }
         
         [FunctionName(nameof(CreateBankAccountActivity))]
-        public async Task<BankAccount> CreateBankAccountAsync([ActivityTrigger] IDurableActivityContext context,
+        public async Task<BankAccountData> CreateBankAccountAsync([ActivityTrigger] IDurableActivityContext context,
             [Table("%DatabaseConfig:BankAccountsTable%")]IAsyncCollector<BankAccountDataModel> bankAccounts)
         {
             var request = context.GetInput<CreateBankAccountRequest>();
@@ -27,7 +27,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
 
             await bankAccounts.AddAsync(dataModel);
 
-            return new BankAccount
+            return new BankAccountData
             {
                 Id = dataModel.BankAccountId,
                 BankAccountType = request.BankAccountType

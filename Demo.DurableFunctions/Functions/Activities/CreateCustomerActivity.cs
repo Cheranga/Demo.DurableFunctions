@@ -1,14 +1,12 @@
-using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.DataAccess.Models;
 using Demo.DurableFunctions.DTO.Requests;
-using Demo.DurableFunctions.Exceptions;
 using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
-namespace Demo.DurableFunctions.Patterns.FunctionChaining
+namespace Demo.DurableFunctions.Functions.Activities
 {
     public class CreateCustomerActivity
     {
@@ -20,7 +18,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
         }
         
         [FunctionName(nameof(CreateCustomerActivity))]
-        public async Task<Customer> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context,
+        public async Task<CustomerData> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context,
             [Table("%DatabaseConfig:CustomersTable%")]IAsyncCollector<CustomerDataModel> customers)
         {
             var request = context.GetInput<CreateCustomerRequest>();
@@ -28,7 +26,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
 
             await customers.AddAsync(model);
 
-            return new Customer
+            return new CustomerData
             {
                 Id = model.CustomerId,
                 Email = request.CustomerEmail

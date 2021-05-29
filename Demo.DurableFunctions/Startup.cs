@@ -29,14 +29,17 @@ namespace Demo.DurableFunctions
                 typeof(Startup).Assembly
             };
 
-            services.AddAutoMapper(assemblies);
+            services.AddAutoMapper(assemblies, ServiceLifetime.Singleton);
         }
 
         private void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IResponseFormatter<RegisterAccountResponse>, RegisterAccountResponseFormatter>();
-            services.AddScoped<IRegisterBankAccountService, RegisterBankAccountService>();
+            services.AddSingleton<IResponseFormatter<RegisterAccountResponse>, RegisterAccountResponseFormatter>();
+            services.AddSingleton<IRegisterBankAccountService, RegisterBankAccountService>();
             services.AddSingleton<IHttpRequestBodyReader, HttpRequestBodyReader>();
+
+            services.AddSingleton<ICheckVisaService, CheckVisaService>();
+            services.AddSingleton<ICheckDriverLicenseService, CheckDriverLicenseService>();
         }
 
         private void RegisterValidators(IServiceCollection services)
@@ -46,7 +49,7 @@ namespace Demo.DurableFunctions
                 typeof(Startup).Assembly
             };
 
-            services.AddValidatorsFromAssemblies(assemblies);
+            services.AddValidatorsFromAssemblies(assemblies, ServiceLifetime.Singleton);
         }
     }
 }

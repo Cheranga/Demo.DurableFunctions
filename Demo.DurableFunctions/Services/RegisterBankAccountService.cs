@@ -1,11 +1,10 @@
 using System;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
 using Demo.DurableFunctions.DTO.Responses;
-using Demo.DurableFunctions.Patterns.FunctionChaining;
+using Demo.DurableFunctions.Functions.Orchestrators;
 using FluentValidation;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
@@ -39,9 +38,7 @@ namespace Demo.DurableFunctions.Services
             await client.WaitForCompletionOrCreateCheckStatusResponseAsync(request, instanceId, timeout);
 
             var orchestratorResult = await client.GetStatusAsync(instanceId, false, false, false);
-            var status = orchestratorResult.RuntimeStatus;
-
-            if (status == OrchestrationRuntimeStatus.Completed)
+            if (orchestratorResult.RuntimeStatus == OrchestrationRuntimeStatus.Completed)
             {
                 var operation = orchestratorResult.Output.ToObject<Result<RegisterAccountResponse>>();
                 return operation;
