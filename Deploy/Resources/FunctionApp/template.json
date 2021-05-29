@@ -73,7 +73,9 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
                     ],
-                    "properties": {                             
+                    "properties": {   
+                        "DatabaseConfig:BankAccountsTable": "BankAccounts",
+                        "DatabaseConfig:CustomersTable": "Customers",
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
@@ -112,7 +114,9 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/sites/Slots', parameters('functionAppName'), 'Staging')]"
                     ],
-                    "properties": {                           
+                    "properties": {  
+                        "DatabaseConfig:BankAccountsTable": "BankAccounts",
+                        "DatabaseConfig:CustomersTable": "Customers",                         
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[parameters('storageAccountConnectionString')]",
                         "WEBSITE_CONTENTSHARE": "[toLower(parameters('functionAppName'))]",
