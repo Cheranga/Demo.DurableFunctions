@@ -40,8 +40,7 @@
     },
     "variables": {
         "templateUri": "[concat('https://',parameters('sharedStorageName'),'.blob.core.windows.net/',parameters('sharedStorageContainer'))]",
-        "storageAccountDeployment": "[concat(parameters('buildNumber'), '-storage-', parameters('sgName'))]",
-        "funcAppDeployment": "[concat(parameters('buildNumber'), '-function-',parameters('funcAppName'))]"
+        "storageAccountDeployment": "[concat(parameters('buildNumber'), '-storage-', parameters('sgName'))]"
     },
     "resources": [
         {
