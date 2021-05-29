@@ -45,8 +45,12 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
             }
             catch (FunctionFailedException exception)
             {
+                // You can choose to select to throw an exception or return a result. If you return a result the orchestrator sets the status as `Completed`, else it'll set it's status as `Failed`.
+                // In here I have chosen to return a status object.
                 // throw new CustomerAccountOrchestratorException(context.InstanceId);
-                return Result<RegisterAccountResponse>.Failure(exception.Message);
+
+                var errorCode = exception.InnerException.GetType() == typeof(CreateCustomerException) ? "CreateCustomerError" : "CreateBankAccountError";
+                return Result<RegisterAccountResponse>.Failure(errorCode);
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.Exceptions;
 using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
@@ -12,8 +13,8 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
         [FunctionName(nameof(CreateBankAccountActivity))]
         public async Task<BankAccount> CreateBankAccountAsync([ActivityTrigger] IDurableActivityContext context)
         {
-            await Task.Delay(TimeSpan.FromSeconds(1));
-            
+            await Task.Delay(TimeSpan.FromSeconds(5));
+
             var request = context.GetInput<CreateBankAccountRequest>();
 
             return new BankAccount

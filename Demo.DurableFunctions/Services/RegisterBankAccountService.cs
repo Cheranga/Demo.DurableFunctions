@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
-using Demo.DurableFunctions.Api;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
 using Demo.DurableFunctions.DTO.Responses;
@@ -13,6 +13,8 @@ namespace Demo.DurableFunctions.Services
 {
     public class RegisterBankAccountService : IRegisterBankAccountService
     {
+        private const int TimeoutInSeconds = 120;
+        
         private readonly IHttpRequestBodyReader requestBodyReader;
         private readonly IValidator<RegisterAccountRequest> validator;
 
@@ -31,7 +33,7 @@ namespace Demo.DurableFunctions.Services
                 return Result<RegisterAccountResponse>.Failure("InvalidRequest", validationResult);
             }
 
-            var timeout = TimeSpan.FromSeconds(5);
+            var timeout = TimeSpan.FromSeconds(TimeoutInSeconds);
             var instanceId = await client.StartNewAsync(nameof(RegisterAccountOrchestrator), registerAccountRequest);
 
             await client.WaitForCompletionOrCreateCheckStatusResponseAsync(request, instanceId, timeout);
@@ -45,7 +47,7 @@ namespace Demo.DurableFunctions.Services
                 return operation;
             }
 
-            client.TerminateAsync(instanceId, "Timeout occured");
+            await client.TerminateAsync(instanceId, "Timeout occured");
             return Result<RegisterAccountResponse>.Failure("Timeout");
         }
     }

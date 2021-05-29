@@ -2,6 +2,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.DTO.Responses;
+using Demo.DurableFunctions.ResponseFormatters;
 using Demo.DurableFunctions.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -9,17 +11,17 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 
-namespace Demo.DurableFunctions.Api
+namespace Demo.DurableFunctions.Clients
 {
     public class SyncFunctionChainingClientFunction
     {
-        private readonly IHttpRequestBodyReader requestBodyReader;
-        private readonly IValidator<RegisterAccountRequest> validator;
         private readonly IRegisterBankAccountService registerBankAccountService;
+        private readonly IResponseFormatter<RegisterAccountResponse> responseFormatter;
 
-        public SyncFunctionChainingClientFunction(IRegisterBankAccountService registerBankAccountService)
+        public SyncFunctionChainingClientFunction(IRegisterBankAccountService registerBankAccountService, IResponseFormatter<RegisterAccountResponse> responseFormatter)
         {
             this.registerBankAccountService = registerBankAccountService;
+            this.responseFormatter = responseFormatter;
         }
 
         [FunctionName(nameof(SyncFunctionChainingClientFunction))]
@@ -27,9 +29,9 @@ namespace Demo.DurableFunctions.Api
             HttpRequestMessage request,
             [DurableClient]IDurableClient client)
         {
-            var response = await registerBankAccountService.RegisterAsync(request, client);
-
-            return new OkResult();
+            var operation = await registerBankAccountService.RegisterAsync(request, client);
+            var response = responseFormatter.GetResponse(operation);
+            return response;
         }
     }
 }

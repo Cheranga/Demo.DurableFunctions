@@ -1,5 +1,7 @@
 using Demo.DurableFunctions;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.DTO.Responses;
+using Demo.DurableFunctions.ResponseFormatters;
 using Demo.DurableFunctions.Services;
 using FluentValidation;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -32,6 +34,7 @@ namespace Demo.DurableFunctions
 
         private void RegisterServices(IServiceCollection services)
         {
+            services.AddScoped<IResponseFormatter<RegisterAccountResponse>, RegisterAccountResponseFormatter>();
             services.AddScoped<IRegisterBankAccountService, RegisterBankAccountService>();
             services.AddSingleton<IHttpRequestBodyReader, HttpRequestBodyReader>();
         }
