@@ -60,5 +60,6 @@ steps:
         -sgType "$(sgType)" 
         -planName "$(planName)" 
         -planSku "$(planSku)" 
-        -planTier "$(planTier)"
+        -planTier "$(planTier)" 
+        -keyVaultName "$(keyVaultName)"
       deploymentOutputs: ArmOutputs

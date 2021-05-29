@@ -52,13 +52,18 @@
         "planTier": {
             "type": "string",
             "defaultValue": "tbd"
-        }     
+        },
+        "keyVaultName": {
+            "type": "string",
+            "defaultValue": "tbd"
+        }   
     },
     "variables": {
         "templateUri": "[concat('https://',parameters('sharedStorageName'),'.blob.core.windows.net/',parameters('sharedStorageContainer'))]",
         "aspDeployment": "[concat(parameters('buildNumber'), '-asp-', parameters('funcAppName'))]",
         "storageAccountDeployment": "[concat(parameters('buildNumber'), '-storage-', parameters('sgName'))]",
-        "appInsightsDeployment": "[concat(parameters('buildNumber'), '-appinsights-', parameters('funcAppName'))]"
+        "appInsightsDeployment": "[concat(parameters('buildNumber'), '-appinsights-', parameters('funcAppName'))]",
+        "keyVaultDeployment": "[concat(parameters('buildNumber'), '-keyvault-', parameters('funcAppName'))]"
     },
     "resources": [
         {
@@ -132,6 +137,70 @@
                     }
                 }
             }
-        }   
+        },
+        {
+            "name": "[variables('keyVaultDeployment')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateUri'),'/KeyVault/template.json','?', parameters('templateSas'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "rgLocation": {
+                        "value": "[parameters('rgLocation')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('keyVaultName')]"
+                    },
+                    "functionAppName": {
+                        "value": "[parameters('funcAppName')]"
+                    }                    
+                },
+                "dependsOn": [
+                    "[resourceId('Microsoft.Resources/deployments', variables('storageAccountDeployment'))]",
+                    "[resourceId('Microsoft.Resources/deployments', variables('funcAppDeployment'))]"
+                ]
+            }
+        },
+        {
+            "name": "[variables('funcAppDeployment')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateUri'),'/FunctionApp/template.json','?', parameters('templateSas'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "rgLocation": {
+                        "value": "[parameters('rgLocation')]"
+                    },
+                    "functionAppName": {
+                        "value": "[parameters('funcAppName')]"
+                    },
+                    "planName": {
+                        "value": "[parameters('planName')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('keyVaultName')]"
+                    },
+                    "storageAccountConnectionString": {
+                        "value": "[reference(variables('storageAccountDeployment')).outputs.storageAccountConnectionString.value]"
+                    },
+                    "appInsightsKey": {
+                        "value": "[reference(variables('appInsightsDeployment')).outputs.appInsightsKey.value]"
+                    }                    
+                },
+                "dependsOn": [                    
+                    "[resourceId('Microsoft.Resources/deployments', variables('storageAccountDeployment'))]",
+                    "[resourceId('Microsoft.Resources/deployments', variables('aspDeployment'))]",
+                    "[resourceId('Microsoft.Resources/deployments', variables('appInsightsDeployment'))]"
+                ]
+            }
+        }
     ]
 }
