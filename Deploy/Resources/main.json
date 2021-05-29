@@ -2,6 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "funcAppName":{
+            "type": "string",
+            "defaultValue": "tbd"
+        },
         "templateSas": {
             "type": "securestring"
         },
@@ -36,11 +40,25 @@
         "sgType": {
             "type": "string",
             "defaultValue": "tbd"
-        }        
+        },
+        "planName": {
+            "type": "string",
+            "defaultValue": "tbd"
+        },
+        "planSku": {
+            "type": "string",
+            "defaultValue": "tbd"
+        },
+        "planTier": {
+            "type": "string",
+            "defaultValue": "tbd"
+        }     
     },
     "variables": {
         "templateUri": "[concat('https://',parameters('sharedStorageName'),'.blob.core.windows.net/',parameters('sharedStorageContainer'))]",
-        "storageAccountDeployment": "[concat(parameters('buildNumber'), '-storage-', parameters('sgName'))]"
+        "aspDeployment": "[concat(parameters('buildNumber'), '-asp-', parameters('funcAppName'))]",
+        "storageAccountDeployment": "[concat(parameters('buildNumber'), '-storage-', parameters('sgName'))]",
+        "appInsightsDeployment": "[concat(parameters('buildNumber'), '-appinsights-', parameters('funcAppName'))]"
     },
     "resources": [
         {
@@ -68,6 +86,52 @@
                     }
                 }
             }
-        }        
+        },
+        {
+            "name": "[variables('aspDeployment')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateUri'),'/AppServicePlan/template.json','?', parameters('templateSas'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "planName": {
+                        "value": "[parameters('planName')]"
+                    },
+                    "planLocation": {
+                        "value": "[parameters('rgLocation')]"
+                    },
+                    "planSku": {
+                        "value": "[parameters('planSku')]"
+                    },
+                    "planTier": {
+                        "value": "[parameters('planTier')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "[variables('appInsightsDeployment')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateUri'),'/AppInsights/template.json','?', parameters('templateSas'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "name": {
+                        "value": "[parameters('funcAppName')]"
+                    },
+                    "rgLocation": {
+                        "value": "[parameters('rgLocation')]"
+                    }
+                }
+            }
+        }   
     ]
 }

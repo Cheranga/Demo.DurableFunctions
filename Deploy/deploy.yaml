@@ -48,6 +48,7 @@ steps:
       resourceGroupName: "$(rgName)"
       csmFile: "$(Pipeline.Workspace)/deploy/main.json"
       overrideParameters: |
+        -funcAppName "$(funcAppName)" 
         -templateSas "$(storageSasToken)" 
         -buildNumber "${{parameters.buildNumber}}" 
         -rgName "$(rgName)" 
@@ -56,5 +57,8 @@ steps:
         -sharedStorageContainer "$(sharedContainerName)" 
         -sgLocation "$(sgLocation)" 
         -sgName "$(sgName)" 
-        -sgType "$(sgType)"
+        -sgType "$(sgType)" 
+        -planName "$(planName)" 
+        -planSku "$(planSku)" 
+        -planTier "$(planTier)"
       deploymentOutputs: ArmOutputs
