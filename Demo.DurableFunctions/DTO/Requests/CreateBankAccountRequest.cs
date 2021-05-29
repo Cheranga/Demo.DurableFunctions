@@ -5,6 +5,6 @@ namespace Demo.DurableFunctions.DTO.Requests
         public string CustomerId { get; set; }
         public BankAccountType BankAccountType { get; set; }
         public string AccountName { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Deposit { get; set; }
     }
 }

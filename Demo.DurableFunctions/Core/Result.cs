@@ -2,6 +2,32 @@ using FluentValidation.Results;
 
 namespace Demo.DurableFunctions.Core
 {
+    public class Result
+    {
+        public string ErrorCode { get; set; }
+        public ValidationResult ValidationResult { get; set; }
+        public bool Status => ValidationResult == null || ValidationResult.IsValid;
+
+        public static Result Success()
+        {
+            return new Result();
+        }
+
+        public static Result Failure(string errorCode)
+        {
+            return Failure(errorCode, new ValidationResult(new[] {new ValidationFailure(errorCode, errorCode)}));
+        }
+
+        public static Result Failure(string errorCode, ValidationResult validationResult)
+        {
+            return new Result
+            {
+                ErrorCode = errorCode,
+                ValidationResult = validationResult
+            };
+        }
+    }
+    
     public class Result<TData>
     {
         public TData Data { get; set; }

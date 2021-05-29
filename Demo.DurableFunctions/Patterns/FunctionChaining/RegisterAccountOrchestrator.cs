@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.Core;
@@ -60,7 +61,7 @@ namespace Demo.DurableFunctions.Patterns.FunctionChaining
 
             var createBankAccountRequest = mapper.Map<CreateBankAccountRequest>(request);
             createBankAccountRequest.CustomerId = customerId;
-            
+
             var bankAccountData = await context.CallActivityWithRetryAsync<BankAccount>(CreateBankAccount, Retry.For<CreateBankAccountException>(), createBankAccountRequest);
             Log(context, LogLevel.Information, "Successfully registered bank account @{RegisterAccountRequest}", request);
             return bankAccountData;

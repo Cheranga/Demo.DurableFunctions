@@ -8,7 +8,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 
-namespace Demo.DurableFunctions.Clients
+namespace Demo.DurableFunctions.Api
 {
     public class RestartOrchestratorFunction
     {
