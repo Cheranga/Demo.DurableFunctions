@@ -63,7 +63,8 @@
         "aspDeployment": "[concat(parameters('buildNumber'), '-asp-', parameters('funcAppName'))]",
         "storageAccountDeployment": "[concat(parameters('buildNumber'), '-storage-', parameters('sgName'))]",
         "appInsightsDeployment": "[concat(parameters('buildNumber'), '-appinsights-', parameters('funcAppName'))]",
-        "keyVaultDeployment": "[concat(parameters('buildNumber'), '-keyvault-', parameters('funcAppName'))]"
+        "keyVaultDeployment": "[concat(parameters('buildNumber'), '-keyvault-', parameters('funcAppName'))]",
+        "funcAppDeployment": "[concat(parameters('buildNumber'), '-function-',parameters('funcAppName'))]"
     },
     "resources": [
         {
