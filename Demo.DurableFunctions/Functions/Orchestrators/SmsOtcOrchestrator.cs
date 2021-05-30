@@ -35,9 +35,10 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
 
         private async Task<Result<VerifyUserSmsOtcResponse>> HandleOtcAsync(IDurableOrchestrationContext context, string expectedChallengeCode, SendOtcRequest request)
         {
+            var deadLine = context.CurrentUtcDateTime.AddSeconds(60);
             using (var timeoutCts = new CancellationTokenSource())
             {
-                var timeoutTask = context.CreateTimer(context.CurrentUtcDateTime.AddSeconds(60), timeoutCts.Token);
+                var timeoutTask = context.CreateTimer(deadLine, timeoutCts.Token);
                 var challengeResponseTask = context.WaitForExternalEvent<VerifyUserSmsOtcRequest>("SmsChallengeResponse");
 
                 var winner = await Task.WhenAny(challengeResponseTask, timeoutTask);

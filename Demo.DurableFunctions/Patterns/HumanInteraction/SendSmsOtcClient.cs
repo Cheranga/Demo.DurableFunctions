@@ -26,9 +26,12 @@ namespace Demo.DurableFunctions.Patterns.HumanInteraction
         {
             var sendOtcCodeRequest = await requestBodyReader.GetModelAsync<SendOtcRequest>(request);
 
-            await client.StartNewAsync(nameof(SmsOtcOrchestrator), sendOtcCodeRequest.Mobile, sendOtcCodeRequest);
+            var instanceId = Guid.NewGuid().ToString("N").ToUpper();
+            sendOtcCodeRequest.Id = instanceId;
+            
+            await client.StartNewAsync(nameof(SmsOtcOrchestrator),instanceId, sendOtcCodeRequest);
 
-            return new AcceptedResult();
+            return new OkObjectResult(instanceId);
         }
         
     }
