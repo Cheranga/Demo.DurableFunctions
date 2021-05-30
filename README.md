@@ -55,6 +55,28 @@ An orchestration can have many different types of actions, including activity fu
 
 * Constraints
 
+:point_up: Orchestrator functions must be deterministic.
+
+:point_up: Dates and times (current date time).
+
+:point_up: GUID generations and random number generations.
+
+:point_up: Bindings.
+
+:point_up: Network calls.
+
+:point_up: Async APIs.
+
+:point_up: Threading APIs
+
+Never use `ConfigureAwait(false)`. The orchestrator functions must run in it's original thread.
+
+
+
+
+
+
+
 
 ### :zap: Activity [ActivityTrigger]
 Activity functions are the basic unit of work in a durable function orchestration. Activity functions are the functions and tasks that are orchestrated in the process.
@@ -255,10 +277,51 @@ The name speaks for itself! :trollface:
 
 ### :zap: Durable functions behind the scenes
 
-* It uses Azure storage to manage state and distribute work
-* It uses `Azure storage queues` to trigger Azure functions.
-* It uses `Azure table storage` to store the state of the orchestrations.
-* It uses `Event sourcing` concept to record what happened in the orchestrations.
+* The default configuration for Durable Functions stores this runtime state in an Azure storage account.
+* All function execution is driven by `Azure Storage queues`.
+* Orchestration and entity status and history is stored in `Azure table storage`.
+* Azure Blobs and blob leases are used to distribute orchestration instances and entities across multiple app instances.
+
+:bulb: __History Table__
+
+* The History table is an Azure Storage table that contains the history events for all orchestration instances within a task hub.
+  
+
+* Partition key is the orchestrator instance id and the row key is a sequence number.
+
+  
+* When an orchestration instance needs to run, the corresponding rows of the History table are loaded into memory.
+  Then these history events are then replayed into the orchestrator function code to get it back into its previously check-pointed state.
+
+:bulb: __Instances Table__
+
+* The Instances table contains the statuses of all orchestration and entity instances within a task hub. 
+  
+* The partition key of this table is the orchestration instance ID or entity key and the row key is an empty string. There is one row per orchestration or entity instance.
+
+* This table is used to satisfy instance query requests from code as well as status query HTTP API calls. 
+  It is kept eventually consistent with the contents of the History table mentioned previously. It's influenced by CQRS principles.
+
+
+:bulb: __Work item queue__
+
+* There is one work-item queue per task hub in Durable Functions. 
+  
+* This queue is used to trigger stateless activity functions by dequeueing a single message at a time. 
+  
+* Each of these messages contains activity function inputs and additional metadata, such as which function to execute. 
+  
+* When a Durable Functions application scales out to multiple VMs, these VMs all compete to acquire tasks from the work-item queue.
+
+:bulb: __Control queue__
+
+* There are multiple control queues per task hub in Durable Functions. A control queue is more sophisticated than the simpler work-item queue. 
+  
+* Control queues are used to trigger the stateful orchestrator and entity functions. 
+  
+* Because the orchestrator and entity function instances are stateful singletons, it's important that each orchestration or entity is only processed by one worker at a time. 
+  To achieve this constraint, each orchestration instance or entity is assigned to a single control queue. 
+  These control queues are load balanced across workers to ensure that each queue is only processed by one worker at a time.
 
 
 ## :zap: Azure durable function runtime status
@@ -284,6 +347,10 @@ https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-types-features-overview
 
+:white_check_mark:]  Azure durable functions performance and scale
+
+https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-perf-and-scale
+
 :white_check_mark:]  Durable functions HTTP API reference
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-http-api
@@ -292,7 +359,6 @@ https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions
 
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-best-practices
 
-:white_check_mark:]  VSCode extensions to install when working with ARM templates
 
 
   
