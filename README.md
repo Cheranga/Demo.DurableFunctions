@@ -4,7 +4,7 @@
 
 ### Rider
   
-[:white_check_mark:]  Install `Azure Toolkit for Rider` extension
+:white_check_mark:]  Install `Azure Toolkit for Rider` extension
 
 
 ### VSCode
@@ -15,19 +15,19 @@ https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code
 
 Installing below extensions will be very helpful as well
 
-:white_check_mark:  Azure Functions
+:white_check_mark:]  Azure Functions
 
 Create, debug and deploy Azure functions from VSCode itself.
 
-:white_check_mark:  Azure Account
+:white_check_mark:]  Azure Account
 
 > Can work in the Azure cloud shell from your VSCode.
 
-:white_check_mark:  Azure CLI Tools
+:white_check_mark:]  Azure CLI Tools
 
 > Azure CLI intellisense! Create a file with the extension `.azcli` and you can write and execute AZ CLI commands from VS code itself.
 
-:white_check_mark:  Azure Resource Manager Tools
+:white_check_mark:]  Azure Resource Manager Tools
 
 > ARM template snippets and ARM template validations. This has been a life saver!
 
@@ -276,23 +276,23 @@ These are the Azure durable orchestrator function status
 https://docs.microsoft.com/en-us/javascript/api/durable-functions/orchestrationruntimestatus?view=azure-node-latest
   
 ### :zap: References
-:white_check_mark:  Azure durable functions overview
+:white_check_mark:]  Azure durable functions overview
   
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview?tabs=csharp
 
-:white_check_mark:  Azure durable functions concepts
+:white_check_mark:]  Azure durable functions concepts
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-types-features-overview
 
-:white_check_mark:  Durable functions HTTP API reference
+:white_check_mark:]  Durable functions HTTP API reference
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-http-api
 
-:white_check_mark:  Azure functions best practices
+:white_check_mark:]  Azure functions best practices
 
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-best-practices
 
-:white_check_mark:  VSCode extensions to install when working with ARM templates
+:white_check_mark:]  VSCode extensions to install when working with ARM templates
 
 
   
