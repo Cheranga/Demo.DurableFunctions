@@ -3,3 +3,5 @@ variables:
     value: dev
   - name: createNewRg
     value: true
+  - name: twilioFrom
+    value: "+15102502267"
