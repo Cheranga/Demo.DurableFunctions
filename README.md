@@ -4,7 +4,7 @@
 
 ### Rider
   
-:white_check_mark:  Install `Azure Toolkit for Rider` extension
+[:white_check_mark:]  Install `Azure Toolkit for Rider` extension
 
 
 ### VSCode
