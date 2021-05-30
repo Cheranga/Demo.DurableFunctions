@@ -57,15 +57,15 @@
             "type": "string",
             "defaultValue": "tbd"
         },
-        "twilioSid":{
+        "twilio.Sid":{
             "type": "securestring",
             "defaultValue": "tbd"
         },
-        "twilioAuthToken":{
+        "twilio.AuthToken":{
             "type": "securestring",
             "defaultValue": "tbd"
         },
-        "twilioFrom":{
+        "twilio.From":{
             "type": "securestring",
             "defaultValue": "tbd"
         }
@@ -172,13 +172,13 @@
                         "value": "[parameters('funcAppName')]"
                     },
                     "twilioSid": {
-                        "value": "[parameters('twilioSid')]"
+                        "value": "[parameters('twilio.Sid')]"
                     },
                     "twilioAuthToken": {
-                        "value": "[parameters('twilioAuthToken')]"
+                        "value": "[parameters('twilio.AuthToken')]"
                     },
                     "twilioFrom": {
-                        "value": "[parameters('twilioFrom')]"
+                        "value": "[parameters('twilio.From')]"
                     }
                 },
                 "dependsOn": [

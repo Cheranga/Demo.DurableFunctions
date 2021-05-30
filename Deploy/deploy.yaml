@@ -62,9 +62,9 @@ steps:
         -planSku "$(planSku)" 
         -planTier "$(planTier)" 
         -keyVaultName "$(keyVaultName)" 
-        -twilioSid "$(twilioSid)" 
-        -twilioAuthToken "$(twilioAuthToken)" 
-        -twilioFrom "$(twilioFrom)"
+        -twilio.Sid "$(twilioSid)" 
+        -twilio.AuthToken "$(twilioAuthToken)" 
+        -twilio.From "$(twilioFrom)"
       deploymentOutputs: ArmOutputs
 
   - task: AzureAppServiceManage@0
