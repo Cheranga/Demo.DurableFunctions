@@ -240,19 +240,19 @@ These are the Azure durable orchestrator function status
 https://docs.microsoft.com/en-us/javascript/api/durable-functions/orchestrationruntimestatus?view=azure-node-latest
   
 ### :zap: References
-- [x] Azure durable functions overview
+:white_check_mark: Azure durable functions overview
   
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview?tabs=csharp
 
-- [x] Azure durable functions concepts
+:white_check_mark: Azure durable functions concepts
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-types-features-overview
 
-- [x] Durable functions HTTP API reference
+:white_check_mark: Durable functions HTTP API reference
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-http-api
 
-- [x] Azure functions best practices
+:white_check_mark: Azure functions best practices
 
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-best-practices
 
