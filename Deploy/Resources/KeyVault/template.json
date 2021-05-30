@@ -66,40 +66,42 @@
                     "name": "standard",
                     "family": "A"
                 }
-            }            
-        },
-        {
-            "type": "secrets",
-            "name": "twilioSid",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
-            ],
-            "properties": {
-                "value": "[parameters('twilioSid')]"
-            }
-        },
-        {
-            "type": "secrets",
-            "name": "twilioAuthToken",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
-            ],
-            "properties": {
-                "value": "[parameters('twilioAuthToken')]"
-            }
-        },
-        {
-            "type": "secrets",
-            "name": "twilioFrom",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
-            ],
-            "properties": {
-                "value": "[parameters('twilioFrom')]"
-            }
+            },
+            "resources": [
+                {
+                    "type": "secrets",
+                    "name": "twilioSid",
+                    "apiVersion": "2016-10-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('twilioSid')]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "name": "twilioAuthToken",
+                    "apiVersion": "2016-10-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('twilioAuthToken')]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "name": "twilioFrom",
+                    "apiVersion": "2016-10-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('twilioFrom')]"
+                    }
+                }                                     
+            ]
         }
     ],
     "outputs": {}
