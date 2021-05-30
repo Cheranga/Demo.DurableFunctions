@@ -15,13 +15,12 @@ https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code
 - Other
   - [x] Install `Microsoft.Azure.WebJobs.Extensions.DurableTask.Analyzers` nuget package. It will guide you potential code violations when implementing Azure durable functions.
   
-# :zap: What are Azure durable functions?
+## :zap: What are Azure durable functions?
 
-> Durable Functions is an extension of Azure Functions that lets you write stateful functions in a serverless compute environment. The extension lets you define stateful workflows by writing orchestrator functions and stateful entities by writing entity functions using the Azure Functions programming model. Behind the scenes, the extension manages state, checkpoints, and restarts for you, allowing you to focus on your business logic.
-</br>
-</br>_"Microsoft"_
+Durable Functions is an extension of Azure Functions that lets you write stateful functions in a serverless compute environment. The extension lets you define stateful workflows by writing orchestrator functions and stateful entities by writing entity functions using the Azure Functions programming model. Behind the scenes, the extension manages state, checkpoints, and restarts for you, allowing you to focus on your business logic.
 
-When comes to Azure durable functions there are four different function types.
+## :zap: Durable function types
+There are four different durable function types.
 
 ### :zap: Client
 
