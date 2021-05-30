@@ -56,7 +56,19 @@
         "keyVaultName": {
             "type": "string",
             "defaultValue": "tbd"
-        }   
+        },
+        "twilioSid":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        },
+        "twilioAuthToken":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        },
+        "twilioFrom":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        }
     },
     "variables": {
         "templateUri": "[concat('https://',parameters('sharedStorageName'),'.blob.core.windows.net/',parameters('sharedStorageContainer'))]",
@@ -158,7 +170,16 @@
                     },
                     "functionAppName": {
                         "value": "[parameters('funcAppName')]"
-                    }                    
+                    },
+                    "twilioSid": {
+                        "value": "[parameters('twilioSid')]"
+                    },
+                    "twilioAuthToken": {
+                        "value": "[parameters('twilioAuthToken')]"
+                    },
+                    "twilioFrom": {
+                        "value": "[parameters('twilioFrom')]"
+                    }
                 },
                 "dependsOn": [
                     "[resourceId('Microsoft.Resources/deployments', variables('storageAccountDeployment'))]",

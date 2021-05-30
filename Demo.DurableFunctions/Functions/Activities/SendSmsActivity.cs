@@ -13,7 +13,8 @@ namespace Demo.DurableFunctions.Functions.Activities
     {
         [FunctionName(nameof(SendSmsActivity))]
         public async Task<Result> SendSmsOtcAsync([ActivityTrigger]IDurableActivityContext context,
-            [TwilioSms(AccountSidSetting = "TwilioSmsConfig:Sid",AuthTokenSetting = "TwilioSmsConfig:AuthToken", From = "%TwilioSmsConfig:From%")]IAsyncCollector<CreateMessageOptions> messages)
+            [TwilioSms(AccountSidSetting = "TwilioSmsConfig:Sid",AuthTokenSetting = "TwilioSmsConfig:AuthToken", From = "%TwilioSmsConfig:From%")]
+            IAsyncCollector<CreateMessageOptions> messages)
         {
             var request = context.GetInput<SendSmsRequest>();
 

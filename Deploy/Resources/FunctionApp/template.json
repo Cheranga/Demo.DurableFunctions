@@ -36,7 +36,10 @@
             "defaultValue": "tbd"
         }        
     },
-    "variables": {             
+    "variables": {        
+        "twilioSid": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioSid/)')]",
+        "twilioAuthToken": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioAuthToken/)')]",
+        "twilioFrom": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioFrom/)')]",
         "timeZone": "AUS Eastern Standard Time"
     },
     "resources": [
@@ -73,7 +76,10 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
                     ],
-                    "properties": {   
+                    "properties": {  
+                        "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
+                        "TwilioSmsConfig:AuthToken": "[variables('twilioAuthToken')]",
+                        "TwilioSmsConfig:From": "[variables('twilioFrom')]", 
                         "DatabaseConfig:BankAccountsTable": "BankAccounts",
                         "DatabaseConfig:CustomersTable": "Customers",
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
@@ -115,6 +121,9 @@
                         "[resourceId('Microsoft.Web/sites/Slots', parameters('functionAppName'), 'Staging')]"
                     ],
                     "properties": {  
+                        "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
+                        "TwilioSmsConfig:AuthToken": "[variables('twilioAuthToken')]",
+                        "TwilioSmsConfig:From": "[variables('twilioFrom')]", 
                         "DatabaseConfig:BankAccountsTable": "BankAccounts",
                         "DatabaseConfig:CustomersTable": "Customers",                         
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",

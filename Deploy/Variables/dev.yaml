@@ -1,4 +1,5 @@
 variables:
+  - group: FunkyDemo
   - name: environmentName
     value: dev
   - name: createNewRg

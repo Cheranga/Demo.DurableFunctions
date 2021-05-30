@@ -11,8 +11,21 @@
             "defaultValue": "tbd"
         },
         "functionAppName": {
-            "type": "string"
-        }        
+            "type": "string",
+            "defaultValue": "tbd"            
+        },
+        "twilioSid":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        },
+        "twilioAuthToken":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        },
+        "twilioFrom":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        }
     },    
     "variables": {
     },
@@ -54,6 +67,39 @@
                     "family": "A"
                 }
             }            
+        },
+        {
+            "type": "secrets",
+            "name": "twilioSid",
+            "apiVersion": "2016-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('twilioSid')]"
+            }
+        },
+        {
+            "type": "secrets",
+            "name": "twilioAuthToken",
+            "apiVersion": "2016-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('twilioAuthToken')]"
+            }
+        },
+        {
+            "type": "secrets",
+            "name": "twilioFrom",
+            "apiVersion": "2016-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('twilioFrom')]"
+            }
         }
     ],
     "outputs": {}

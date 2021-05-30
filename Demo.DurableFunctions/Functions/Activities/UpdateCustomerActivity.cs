@@ -12,7 +12,7 @@ namespace Demo.DurableFunctions.Functions.Activities
     {
         [FunctionName(nameof(UpdateCustomerActivity))]
         public async Task<Result> UpdateCustomerAsync([ActivityTrigger]IDurableActivityContext context,
-            [Table("%DataConfig:CustomersTable%")]CloudTable table)
+            [Table("%DatabaseConfig:CustomersTable%")]CloudTable table)
         {
             var request = context.GetInput<UpdateCustomerRequest>();
 
