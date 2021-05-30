@@ -1,4 +1,5 @@
-using Microsoft.WindowsAzure.Storage.Table;
+
+using Microsoft.Azure.Cosmos.Table;
 
 namespace Demo.DurableFunctions.DataAccess.Models
 {
@@ -9,5 +10,6 @@ namespace Demo.DurableFunctions.DataAccess.Models
         public string DriverLicenseNo { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public bool MobileVerified { get; set; }
     }
 }
