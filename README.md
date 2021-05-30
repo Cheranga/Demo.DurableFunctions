@@ -2,15 +2,34 @@
 
 ## :zap: Setting up your IDE
 
-- Prerequisites for Rider
-  - [x] Install `Azure Toolkit for Rider` extension
+### Rider
+  
+:white_check_mark:  Install `Azure Toolkit for Rider` extension
 
 
-- Prerequisites for VS Code
+### VSCode
 
 Please refer the documentation in below.
 
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=csharp
+
+Installing below extensions will be very helpful as well
+
+:white_check_mark:  Azure Functions
+
+Create, debug and deploy Azure functions from VSCode itself.
+
+:white_check_mark:  Azure Account
+
+> Can work in the Azure cloud shell from your VSCode.
+
+:white_check_mark:  Azure CLI Tools
+
+> Azure CLI intellisense! Create a file with the extension `.azcli` and you can write and execute AZ CLI commands from VS code itself.
+
+:white_check_mark:  Azure Resource Manager Tools
+
+> ARM template snippets and ARM template validations. This has been a life saver!
 
 - Other
   - [x] Install `Microsoft.Azure.WebJobs.Extensions.DurableTask.Analyzers` nuget package. It will guide you potential code violations when implementing Azure durable functions.
@@ -53,6 +72,9 @@ https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-a
 ## :zap: Azure durable function patterns
 
 ### :zap: Function chaining
+
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/functionchaining.png "Function Chaining")
+
 * Asynchronously calling HTTP endpoint
 
 ```c#
@@ -121,6 +143,8 @@ public async Task<Result<RegisterAccountResponse>> RegisterAsync(HttpRequestMess
 
 ### :zap: Fan-out / Fan-in pattern
 
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/fanoutfanin.png "Fan-out and Fan-in")
+
 Carry multiple activities in parallel and wait for them to complete so that a decision can be made.
 
 _Example code_
@@ -147,6 +171,8 @@ if (!checkDriverLicenseOperation.Status)
 ```
 
 ### :zap: Monitors
+
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/monitor.png "Monitor")
 
 The monitor pattern refers to a flexible, recurring process in a workflow. An example is polling until specific conditions are met. 
 A timer trigger function interval is static and managing instance lifetimes becomes complex. You can use Durable Functions to create flexible recurrence intervals, manage task lifetimes, and create multiple monitor processes from a single orchestration.
@@ -225,6 +251,16 @@ public async Task<Result> CheckDocumentsAsync([OrchestrationTrigger] IDurableOrc
 
 The name speaks for itself! :trollface:
 
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/approval.png "Human interaction")
+
+### :zap: Durable functions behind the scenes
+
+* It uses Azure storage to manage state and distribute work
+* It uses `Azure storage queues` to trigger Azure functions.
+* It uses `Azure table storage` to store the state of the orchestrations.
+* It uses `Event sourcing` concept to record what happened in the orchestrations.
+
+
 ## :zap: Azure durable function runtime status
 
 These are the Azure durable orchestrator function status
@@ -240,21 +276,23 @@ These are the Azure durable orchestrator function status
 https://docs.microsoft.com/en-us/javascript/api/durable-functions/orchestrationruntimestatus?view=azure-node-latest
   
 ### :zap: References
-:white_check_mark: Azure durable functions overview
+:white_check_mark:  Azure durable functions overview
   
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview?tabs=csharp
 
-:white_check_mark: Azure durable functions concepts
+:white_check_mark:  Azure durable functions concepts
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-types-features-overview
 
-:white_check_mark: Durable functions HTTP API reference
+:white_check_mark:  Durable functions HTTP API reference
 
 https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-http-api
 
-:white_check_mark: Azure functions best practices
+:white_check_mark:  Azure functions best practices
 
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-best-practices
+
+:white_check_mark:  VSCode extensions to install when working with ARM templates
 
 
   
