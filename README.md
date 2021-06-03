@@ -97,6 +97,9 @@ https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-a
 
 ![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/functionchaining.png "Function Chaining")
 
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/chainingfifo.png "Function Chaining and fifo")
+
+
 * Asynchronously calling HTTP endpoint
 
 ```c#
