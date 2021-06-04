@@ -17,7 +17,7 @@ namespace Demo.DurableFunctions.Patterns.Monitor
             [DurableClient]IDurableClient client)
         {
             var instanceId = await client.StartNewAsync(nameof(MonitorDocumentsOrchestrator));
-            return new AcceptedResult();
+            return new OkObjectResult(instanceId);
         }
     }
 }
