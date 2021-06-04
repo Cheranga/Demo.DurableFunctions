@@ -37,12 +37,14 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             {
                 var request = context.GetInput<RegisterAccountRequest>();
 
+                // Uncomment this for sub orchestration
                 // var eligibilityOperation = await context.CallSubOrchestratorAsync<Result>(CheckEligibility, request);
                 // if (!eligibilityOperation.Status)
                 // {
                 //     return Result<RegisterAccountResponse>.Failure(eligibilityOperation.ErrorCode);
                 // }
                 
+                // Comment this for sub orchestration
                 var checkVisaRequest = mapper.Map<CheckVisaRequest>(request);
                 var checkDriverLicenseRequest = mapper.Map<CheckDriverLicenseRequest>(request);
                 // Fan-out
@@ -62,6 +64,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                 {
                     return Result<RegisterAccountResponse>.Failure("InvalidDriverLicense");
                 }
+                // Comment end
                 
                 var customerData = await RegisterAndGetCustomerData(context, request);
                 var bankAccountData = await RegisterAndGetBankAccountData(context, request, customerData.Id);

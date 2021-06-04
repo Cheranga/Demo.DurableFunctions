@@ -41,6 +41,11 @@ namespace Demo.DurableFunctions.Services
             if (orchestratorResult.RuntimeStatus == OrchestrationRuntimeStatus.Completed)
             {
                 var operation = orchestratorResult.Output.ToObject<Result<RegisterAccountResponse>>();
+                if (operation.Data != null)
+                {
+                    operation.Data.InstanceId = instanceId;
+                }
+                
                 return operation;
             }
 
