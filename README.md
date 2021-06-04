@@ -71,13 +71,6 @@ An orchestration can have many different types of actions, including activity fu
 
 Never use `ConfigureAwait(false)`. The orchestrator functions must run in it's original thread.
 
-
-
-
-
-
-
-
 ### :zap: Activity [ActivityTrigger]
 Activity functions are the basic unit of work in a durable function orchestration. Activity functions are the functions and tasks that are orchestrated in the process.
 Unlike orchestrator functions, activity functions aren't restricted in the type of work you can do in them. Activity functions are frequently used to make network calls or run CPU intensive operations. An activity function can also return data back to the orchestrator function.
@@ -102,6 +95,15 @@ https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-a
 
 * Asynchronously calling HTTP endpoint
 
+__Associated Classes__
+* AsyncFunctionChainingClient
+* RegisterAccountOrchestrator
+* CreateCustomerActivity
+* CreateBankAccountActivity
+* CheckVisaActivity
+* CheckDriverLicenseActivity
+* EligibilityOrchestrator
+
 ```c#
 [FunctionName(nameof(AsyncFunctionChainingClient))]
 public async Task<IActionResult> FunctionChainingAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining/async")]
@@ -119,6 +121,20 @@ public async Task<IActionResult> FunctionChainingAsync([HttpTrigger(Authorizatio
 }
 ```
 * Synchronously calling HTTP endpoint
+
+__Associated Classes__
+
+__Associated Classes__
+* SyncFunctionChainingClient
+* RegisterBankAccountService
+* RegisterAccountOrchestrator
+* CreateCustomerActivity
+* CreateBankAccountActivity
+* CheckVisaActivity
+* CheckDriverLicenseActivity
+* EligibilityOrchestrator
+
+
 ```c#
 [FunctionName(nameof(SyncFunctionChainingClient))]
 public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining/sync")]
@@ -202,6 +218,10 @@ if (!checkDriverLicenseOperation.Status)
 The monitor pattern refers to a flexible, recurring process in a workflow. An example is polling until specific conditions are met. 
 A timer trigger function interval is static and managing instance lifetimes becomes complex. You can use Durable Functions to create flexible recurrence intervals, manage task lifetimes, and create multiple monitor processes from a single orchestration.
 
+__Associated Classes__
+* MonitorRequiredDocumentsClient
+* MonitorDocumentsOrchestrator
+
 ```c#
 [FunctionName(nameof(MonitorDocumentsOrchestrator))]
 public async Task<Result> MonitorAsync([OrchestrationTrigger] IDurableOrchestrationContext context)
@@ -242,6 +262,13 @@ This history grows continuously as long as the orchestrator function continues t
 If the orchestrator function goes into an infinite loop and continuously schedules work, this history could grow critically large and cause significant performance problems. 
 The eternal orchestration concept was designed to mitigate these kinds of problems for applications that need infinite loops.
 
+__Associated classes__
+
+* EternalCheckDocumentsClient
+* CheckDocumentsOrchestrator
+* CheckDocumentsActivity
+
+
 ```c#
 [FunctionName(nameof(CheckDocumentsOrchestrator))]
 public async Task<Result> CheckDocumentsAsync([OrchestrationTrigger] IDurableOrchestrationContext context)
@@ -275,6 +302,13 @@ public async Task<Result> CheckDocumentsAsync([OrchestrationTrigger] IDurableOrc
 ### :zap: Human interaction
 
 The name speaks for itself! :trollface:
+
+Associated classes
+* SendSmsOtcClient
+* VerifyUserSmsOtcClient
+* SmsOtcOrchestrator 
+* SmsOtcCodeGeneratorActivity
+
 
 ![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/approval.png "Human interaction")
 
