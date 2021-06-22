@@ -26,7 +26,6 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             return operation;
         }
 
-
         private async Task<Result<VerifyUserSmsOtcResponse>> HandleOtcWithAttemptsAsync(IDurableOrchestrationContext context, string expectedChallengeCode, SendOtcRequest request, int numOfAttempts = 3)
         {
             using (var cancellationToken = new CancellationTokenSource())
@@ -54,6 +53,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                     {
                         cancellationToken.Cancel();
 
+                        await UpdateCustomerAsync(context, request.CustomerId);
                         await context.CallActivityAsync<Result>(nameof(SendSmsActivity), new SendSmsRequest
                         {
                             Mobile = request.Mobile,
@@ -80,53 +80,17 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                 cancellationToken.Cancel();
             }
 
+            await SendFeedBackMessageAsync(context, request);
             return Result<VerifyUserSmsOtcResponse>.Failure("MaxOTCAttemptsReached");
         }
 
-        private async Task<Result<VerifyUserSmsOtcResponse>> HandleOtcAsync(IDurableOrchestrationContext context, string expectedChallengeCode, SendOtcRequest request)
+        private async Task SendFeedBackMessageAsync(IDurableOrchestrationContext context, SendOtcRequest request)
         {
-            
-            
-            
-            var deadLine = context.CurrentUtcDateTime.AddSeconds(300);
-            using (var timeoutCts = new CancellationTokenSource())
+            await context.CallActivityAsync<Result>(nameof(SendSmsActivity), new SendSmsRequest
             {
-                for (var attempts = 1; attempts <= 3; attempts++)
-                {
-                    var timeoutTask = context.CreateTimer(deadLine, timeoutCts.Token);
-                    var challengeResponseTask = context.WaitForExternalEvent<VerifyUserSmsOtcRequest>("SmsChallengeResponse");
-
-                    var winner = await Task.WhenAny(challengeResponseTask, timeoutTask);
-                    if (winner == challengeResponseTask)
-                    {
-                        timeoutCts.Cancel();
-                        var actualChallengeCode = challengeResponseTask.Result.Code;
-                        if (string.Equals(expectedChallengeCode, actualChallengeCode))
-                        {
-                            var updateOperation = await UpdateCustomerAsync(context, request.CustomerId);
-                            if (!updateOperation.Status)
-                            {
-                                return Result<VerifyUserSmsOtcResponse>.Failure("UpdateCustomer");
-                            }
-
-                            var response = new VerifyUserSmsOtcResponse
-                            {
-                                Mobile = request.Mobile,
-                                VerifiedAt = context.CurrentUtcDateTime
-                            };
-                            return Result<VerifyUserSmsOtcResponse>.Success(response);
-                        }
-                        
-                        await SendSmsAsync(context, request.Mobile, expectedChallengeCode, $"Incorrect code entered, you have {3 - attempts} attempts left.");
-                    }
-                    else
-                    {
-                        return Result<VerifyUserSmsOtcResponse>.Failure("OTCTimeout");
-                    }
-                }
-            }
-            
-            return Result<VerifyUserSmsOtcResponse>.Failure("InvalidOTCEntered");
+                Mobile = request.Mobile,
+                Message = "Cannot verify OTC, please contact customer support"
+            });
         }
 
         private async Task<Result> SendSmsAsync(IDurableOrchestrationContext context, string mobile, string code, string prefix = "")
