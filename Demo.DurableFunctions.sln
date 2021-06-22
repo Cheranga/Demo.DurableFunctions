@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DurableFunctions", "Demo.DurableFunctions\Demo.DurableFunctions.csproj", "{1AC7AB5D-72F1-4969-85FB-BFDE22F24835}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DurableFunctions.Core", "Demo.DurableFunctions.Core\Demo.DurableFunctions.Core.csproj", "{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{1AC7AB5D-72F1-4969-85FB-BFDE22F24835}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AC7AB5D-72F1-4969-85FB-BFDE22F24835}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AC7AB5D-72F1-4969-85FB-BFDE22F24835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

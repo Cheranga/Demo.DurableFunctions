@@ -1,8 +1,7 @@
 using System;
 using AutoMapper;
+using Demo.DurableFunctions.Core.Application.Requests;
 using Demo.DurableFunctions.DataAccess.Models;
-using Demo.DurableFunctions.DTO.Requests;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Demo.DurableFunctions.Mappers
 {

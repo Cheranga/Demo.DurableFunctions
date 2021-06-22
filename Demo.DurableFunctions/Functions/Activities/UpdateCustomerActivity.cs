@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Application.Requests;
 using Demo.DurableFunctions.DataAccess.Models;
-using Demo.DurableFunctions.DTO.Requests;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;

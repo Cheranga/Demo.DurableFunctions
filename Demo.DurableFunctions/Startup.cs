@@ -1,6 +1,7 @@
 using Demo.DurableFunctions;
 using Demo.DurableFunctions.Core;
-using Demo.DurableFunctions.DTO.Responses;
+using Demo.DurableFunctions.Core.Application.Responses;
+using Demo.DurableFunctions.Core.Application.Services;
 using Demo.DurableFunctions.ResponseFormatters;
 using Demo.DurableFunctions.Services;
 using FluentValidation;
@@ -17,8 +18,8 @@ namespace Demo.DurableFunctions
         {
             var services = builder.Services;
 
+            services.RegisterCoreServices();
             RegisterServices(services);
-            RegisterValidators(services);
             RegisterMappers(services);
         }
 
@@ -37,20 +38,6 @@ namespace Demo.DurableFunctions
             services.AddSingleton<IResponseFormatter<RegisterAccountResponse>, RegisterAccountResponseFormatter>();
             services.AddSingleton<IRegisterBankAccountService, RegisterBankAccountService>();
             services.AddSingleton<IHttpRequestBodyReader, HttpRequestBodyReader>();
-
-            services.AddSingleton<ICheckVisaService, CheckVisaService>();
-            services.AddSingleton<ICheckDriverLicenseService, CheckDriverLicenseService>();
-            services.AddSingleton<IVerifyDocumentsService, VerifyDocumentsService>();
-        }
-
-        private void RegisterValidators(IServiceCollection services)
-        {
-            var assemblies = new[]
-            {
-                typeof(Startup).Assembly
-            };
-
-            services.AddValidatorsFromAssemblies(assemblies, ServiceLifetime.Singleton);
         }
     }
 }

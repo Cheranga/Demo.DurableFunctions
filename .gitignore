@@ -2,3 +2,9 @@
 .idea/.idea.Demo.DurableFunctions/.idea/
 
 .DS_Store
+
+Demo.DurableFunctions.Core/obj/Debug/netcoreapp3.1/
+
+Demo.DurableFunctions.Core/obj/
+
+Demo.DurableFunctions.Core/bin/Debug/netcoreapp3.1/

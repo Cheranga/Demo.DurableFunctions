@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Demo.DurableFunctions.Core.Application.Requests;
 using Demo.DurableFunctions.DataAccess.Models;
-using Demo.DurableFunctions.DTO.Requests;
 using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;

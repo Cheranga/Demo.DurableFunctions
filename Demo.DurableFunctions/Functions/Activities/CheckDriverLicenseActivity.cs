@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
-using Demo.DurableFunctions.DTO.Requests;
-using Demo.DurableFunctions.Services;
+using Demo.DurableFunctions.Core.Application.Requests;
+using Demo.DurableFunctions.Core.Application.Services;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 

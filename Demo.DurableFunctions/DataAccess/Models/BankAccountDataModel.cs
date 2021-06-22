@@ -1,4 +1,4 @@
-using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.Core.Application.Requests;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Demo.DurableFunctions.DataAccess.Models
