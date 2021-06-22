@@ -88,6 +88,8 @@ https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-a
 
 ### :zap: Function chaining
 
+[a relative link](FunctionChaining.md)
+
 ![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/functionchaining.png "Function Chaining")
 
 ![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/chainingfifo.png "Function Chaining and fifo")
