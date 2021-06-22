@@ -14,7 +14,7 @@
 
 ### Example 01 (Without sub-orchestrators)
 
-![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/demo1.png "Example 01")
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/feature/Demo/Images/demo1.png "Example 01")
 
 <details>
 <summary>Mermaid diagram</summary>
@@ -54,7 +54,7 @@ end
 
 ### Example 02
 
-![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/master/Images/demo2.png "Example 02")
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/feature/Demo/Images/demo2.png "Example 02")
 
 <details>
 <summary>Mermaid diagram</summary>
