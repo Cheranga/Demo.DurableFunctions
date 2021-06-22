@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Demo.DurableFunctions.Core
+namespace Demo.DurableFunctions.Services
 {
     public interface IHttpRequestBodyReader
     {

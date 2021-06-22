@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.Core.Application.Requests;
 using Demo.DurableFunctions.Functions.Orchestrators;
+using Demo.DurableFunctions.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

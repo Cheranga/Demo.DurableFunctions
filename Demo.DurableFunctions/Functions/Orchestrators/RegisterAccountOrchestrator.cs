@@ -3,7 +3,7 @@ using AutoMapper;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.Core.Application.Requests;
 using Demo.DurableFunctions.Core.Application.Responses;
-using Demo.DurableFunctions.Core.Exceptions;
+using Demo.DurableFunctions.Exceptions;
 using Demo.DurableFunctions.Extensions;
 using Demo.DurableFunctions.Functions.Activities;
 using Demo.DurableFunctions.Models;

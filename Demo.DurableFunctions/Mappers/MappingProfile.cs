@@ -12,6 +12,27 @@ namespace Demo.DurableFunctions.Mappers
             CreateMap<RegisterAccountRequest, CreateBankAccountRequest>();
             CreateMap<RegisterAccountRequest, CreateCustomerRequest>();
 
+            MapToCustomerDataModelFromCreateCustomerRequest();
+            MapToBankAccountDataModelFromCreateBankAccountRequest();
+
+            CreateMap<RegisterAccountRequest, CheckVisaRequest>();
+            CreateMap<RegisterAccountRequest, CheckDriverLicenseRequest>();
+        }
+
+        private void MapToBankAccountDataModelFromCreateBankAccountRequest()
+        {
+            CreateMap<CreateBankAccountRequest, BankAccountDataModel>()
+                .ForMember(x => x.BankAccountId, x => x.MapFrom(y=>Guid.NewGuid().ToString("N").ToUpper()))
+                .ForMember(x => x.Amount, x => x.MapFrom(y => y.Deposit))
+                .AfterMap((request, model) =>
+                {
+                    model.PartitionKey = $"{request.CustomerId}".ToUpper();
+                    model.RowKey = $"{request.BankAccountType}_{model.BankAccountId}".ToUpper();
+                });
+        }
+
+        private void MapToCustomerDataModelFromCreateCustomerRequest()
+        {
             CreateMap<CreateCustomerRequest, CustomerDataModel>()
                 .ForMember(x => x.CustomerId, x => x.MapFrom(y=>Guid.NewGuid().ToString("N").ToUpper()))
                 .ForMember(x => x.Email, x => x.MapFrom(y => y.CustomerEmail))
@@ -21,18 +42,6 @@ namespace Demo.DurableFunctions.Mappers
                     model.PartitionKey = $"ACTIVE_{model.CustomerId}".ToUpper();
                     model.RowKey = $"{model.CustomerId}".ToUpper();
                 });
-
-            CreateMap<CreateBankAccountRequest, BankAccountDataModel>()
-                .ForMember(x => x.BankAccountId, x => x.MapFrom(y=>Guid.NewGuid().ToString("N").ToUpper()))
-                .ForMember(x => x.Amount, x => x.MapFrom(y => y.Deposit))
-                .AfterMap((request, model) =>
-                {
-                    model.PartitionKey = $"{request.CustomerId}".ToUpper();
-                    model.RowKey = $"{request.BankAccountType}_{model.BankAccountId}".ToUpper();
-                });
-
-            CreateMap<RegisterAccountRequest, CheckVisaRequest>();
-            CreateMap<RegisterAccountRequest, CheckDriverLicenseRequest>();
         }
     }
 }

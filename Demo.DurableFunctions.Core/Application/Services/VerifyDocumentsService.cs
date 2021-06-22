@@ -4,7 +4,7 @@ using Demo.DurableFunctions.Core.Application.Requests;
 
 namespace Demo.DurableFunctions.Core.Application.Services
 {
-    public class VerifyDocumentsService : IVerifyDocumentsService
+    internal class VerifyDocumentsService : IVerifyDocumentsService
     {
         public Task<Result<int>> VerifyAsync(CheckDocumentsRequest request)
         {

@@ -1,7 +1,7 @@
 using System;
 using Demo.DurableFunctions.Core.Application.Requests;
 
-namespace Demo.DurableFunctions.Core.Exceptions
+namespace Demo.DurableFunctions.Exceptions
 {
     public class CreateBankAccountException : Exception
     {

@@ -4,7 +4,7 @@ using Demo.DurableFunctions.Core.Application.Requests;
 
 namespace Demo.DurableFunctions.Core.Application.Services
 {
-    public class CheckVisaService : ICheckVisaService
+    internal class CheckVisaService : ICheckVisaService
     {
         public async Task<Result> CheckAsync(CheckVisaRequest request)
         {

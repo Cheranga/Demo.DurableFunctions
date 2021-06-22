@@ -1,6 +1,6 @@
 using System;
 
-namespace Demo.DurableFunctions.Core.Exceptions
+namespace Demo.DurableFunctions.Exceptions
 {
     public class CreateCustomerException : Exception
     {

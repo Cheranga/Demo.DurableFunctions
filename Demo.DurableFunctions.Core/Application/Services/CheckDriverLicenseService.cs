@@ -4,7 +4,7 @@ using Demo.DurableFunctions.Core.Application.Requests;
 
 namespace Demo.DurableFunctions.Core.Application.Services
 {
-    public class CheckDriverLicenseService : ICheckDriverLicenseService
+    internal class CheckDriverLicenseService : ICheckDriverLicenseService
     {
         public async Task<Result> CheckAsync(CheckDriverLicenseRequest request)
         {

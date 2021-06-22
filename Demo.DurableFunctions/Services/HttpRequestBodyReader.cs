@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Demo.DurableFunctions.Core
+namespace Demo.DurableFunctions.Services
 {
     public class HttpRequestBodyReader : IHttpRequestBodyReader
     {
