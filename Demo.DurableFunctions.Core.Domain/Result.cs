@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 
-namespace Demo.DurableFunctions.Core
+namespace Demo.DurableFunctions.Core.Domain
 {
     public class Result
     {

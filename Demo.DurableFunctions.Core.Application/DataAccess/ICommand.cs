@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Demo.DurableFunctions.Core.Domain;
 
 namespace Demo.DurableFunctions.Core.Application.DataAccess
 {

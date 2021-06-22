@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Functions.Activities;
 using Microsoft.Azure.WebJobs;

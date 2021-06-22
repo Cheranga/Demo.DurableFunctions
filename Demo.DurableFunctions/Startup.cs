@@ -1,5 +1,7 @@
 using Demo.DurableFunctions;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Application;
+using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.Infrastructure.DataAccess;
 using Demo.DurableFunctions.ResponseFormatters;
@@ -25,8 +27,9 @@ namespace Demo.DurableFunctions
             
             RegisterServices(services);
             RegisterMappers(services);
-            
-            services.RegisterCoreServices()
+
+            services.RegisterCoreApplication()
+                .RegisterCoreDomain()
                 .RegisterDataAccess(configuration);
         }
 

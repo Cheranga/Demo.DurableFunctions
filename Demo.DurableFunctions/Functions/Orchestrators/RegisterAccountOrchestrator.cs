@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Domain;
+using Demo.DurableFunctions.Core.Domain.Models;
 using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.Exceptions;
 using Demo.DurableFunctions.Extensions;
 using Demo.DurableFunctions.Functions.Activities;
-using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
@@ -88,23 +89,23 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             }
         }
 
-        private async Task<BankAccountData> RegisterAndGetBankAccountData(IDurableOrchestrationContext context, RegisterAccountRequest request, string customerId)
+        private async Task<BankAccount> RegisterAndGetBankAccountData(IDurableOrchestrationContext context, RegisterAccountRequest request, string customerId)
         {
             Log(context, LogLevel.Information, "Registering bank account @{RegisterAccountRequest}", request);
 
             var createBankAccountRequest = mapper.Map<CreateBankAccountRequest>(request);
             createBankAccountRequest.CustomerId = customerId;
 
-            var bankAccountData = await context.CallActivityWithRetryAsync<BankAccountData>(CreateBankAccount, Retry.For<CreateBankAccountException>(), createBankAccountRequest);
+            var bankAccountData = await context.CallActivityWithRetryAsync<BankAccount>(CreateBankAccount, Retry.For<CreateBankAccountException>(), createBankAccountRequest);
             Log(context, LogLevel.Information, "Successfully registered bank account @{RegisterAccountRequest}", request);
             return bankAccountData;
         }
 
-        private async Task<CustomerData> RegisterAndGetCustomerData(IDurableOrchestrationContext context, RegisterAccountRequest request)
+        private async Task<Customer> RegisterAndGetCustomerData(IDurableOrchestrationContext context, RegisterAccountRequest request)
         {
             Log(context, LogLevel.Information,"Registering customer @{RegisterCustomerRequest}", request);
             var createCustomerRequest = mapper.Map<CreateCustomerRequest>(request);
-            var customerData = await context.CallActivityWithRetryAsync<CustomerData>(CreateCustomer, Retry.For<CreateCustomerException>(), createCustomerRequest);
+            var customerData = await context.CallActivityWithRetryAsync<Customer>(CreateCustomer, Retry.For<CreateCustomerException>(), createCustomerRequest);
             
             Log(context, LogLevel.Information,"Successfully registered customer @{RegisterCustomerRequest}", request);
             return customerData;

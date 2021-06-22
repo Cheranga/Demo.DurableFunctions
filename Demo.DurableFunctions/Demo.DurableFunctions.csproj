@@ -28,10 +28,7 @@
       <Compile Remove="Functions\Orchestrators\MonitorDocumentsOrchestrator.cs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Demo.DurableFunctions.Core\Demo.DurableFunctions.Core.csproj" />
+      <ProjectReference Include="..\Demo.DurableFunctions.Core.Application\Demo.DurableFunctions.Core.Application.csproj" />
       <ProjectReference Include="..\Demo.DurableFunctions.Infrastructure.DataAccess\Demo.DurableFunctions.Infrastructure.DataAccess.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="DataAccess\Models" />
     </ItemGroup>
 </Project>

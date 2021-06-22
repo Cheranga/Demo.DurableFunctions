@@ -1,28 +1,18 @@
 using Demo.DurableFunctions.Core.Application.Services;
 using Demo.DurableFunctions.Core.Domain.Services;
+using Demo.DurableFunctions.Core.Domain.Validators;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Demo.DurableFunctions.Core
+namespace Demo.DurableFunctions.Core.Application
 {
     public static class Bootstrapper
     {
-        public static IServiceCollection RegisterCoreServices(this IServiceCollection services)
+        public static IServiceCollection RegisterCoreApplication(this IServiceCollection services)
         {
-            RegisterValidators(services);
             RegisterServices(services);
 
             return services;
-        }
-
-        private static void RegisterValidators(IServiceCollection services)
-        {
-            var assemblies = new[]
-            {
-                typeof(Bootstrapper).Assembly
-            };
-
-            services.AddValidatorsFromAssemblies(assemblies, ServiceLifetime.Singleton);
         }
 
         private static void RegisterServices(IServiceCollection services)

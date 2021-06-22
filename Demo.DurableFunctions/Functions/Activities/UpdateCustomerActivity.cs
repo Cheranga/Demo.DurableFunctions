@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.Core.Application.DataAccess;
+using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Requests;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;

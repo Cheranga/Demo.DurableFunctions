@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Domain;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
 

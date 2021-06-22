@@ -2,8 +2,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.Core.Application.DataAccess;
+using Demo.DurableFunctions.Core.Domain.Models;
 using Demo.DurableFunctions.Core.Domain.Requests;
-using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
@@ -21,7 +21,7 @@ namespace Demo.DurableFunctions.Functions.Activities
         }
         
         [FunctionName(nameof(CreateCustomerActivity))]
-        public async Task<CustomerData> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context)
+        public async Task<Customer> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context)
         {
             var request = context.GetInput<CreateCustomerRequest>();
             var command = mapper.Map<CreateCustomerCommand>(request);
@@ -33,7 +33,7 @@ namespace Demo.DurableFunctions.Functions.Activities
                 return null;
             }
 
-            return new CustomerData
+            return new Customer
             {
                 Id = command.CustomerId,
                 Email = request.CustomerEmail

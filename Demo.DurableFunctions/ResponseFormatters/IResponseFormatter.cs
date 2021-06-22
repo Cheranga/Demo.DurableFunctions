@@ -1,4 +1,5 @@
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.DurableFunctions.ResponseFormatters

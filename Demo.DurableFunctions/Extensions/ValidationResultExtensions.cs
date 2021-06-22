@@ -1,5 +1,6 @@
 using System.Linq;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Responses;
 
 namespace Demo.DurableFunctions.Extensions

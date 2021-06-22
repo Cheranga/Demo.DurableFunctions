@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.Functions.Orchestrators;

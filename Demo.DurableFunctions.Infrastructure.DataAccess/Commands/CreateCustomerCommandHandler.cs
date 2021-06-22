@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.Core.Application.DataAccess;
+using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Infrastructure.DataAccess.Models;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;

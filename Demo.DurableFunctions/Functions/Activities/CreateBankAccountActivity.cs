@@ -2,8 +2,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.Core.Application.DataAccess;
+using Demo.DurableFunctions.Core.Domain.Models;
 using Demo.DurableFunctions.Core.Domain.Requests;
-using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
@@ -21,7 +21,7 @@ namespace Demo.DurableFunctions.Functions.Activities
         }
         
         [FunctionName(nameof(CreateBankAccountActivity))]
-        public async Task<BankAccountData> CreateBankAccountAsync([ActivityTrigger] IDurableActivityContext context)
+        public async Task<BankAccount> CreateBankAccountAsync([ActivityTrigger] IDurableActivityContext context)
         {
             var request = context.GetInput<CreateBankAccountRequest>();
 
@@ -34,7 +34,7 @@ namespace Demo.DurableFunctions.Functions.Activities
                 return null;
             }
 
-            return new BankAccountData
+            return new BankAccount
             {
                 Id = command.BankAccountId,
                 BankAccountType = request.BankAccountType
