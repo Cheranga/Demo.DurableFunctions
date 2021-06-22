@@ -1,7 +1,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using Demo.DurableFunctions.Core;
-using Demo.DurableFunctions.Core.Application.Requests;
+using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Functions.Orchestrators;
 using Demo.DurableFunctions.Services;
 using FluentValidation;

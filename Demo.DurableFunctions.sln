@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DurableFunctions", "De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DurableFunctions.Core", "Demo.DurableFunctions.Core\Demo.DurableFunctions.Core.csproj", "{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DurableFunctions.Infrastructure.DataAccess", "Demo.DurableFunctions.Infrastructure.DataAccess\Demo.DurableFunctions.Infrastructure.DataAccess.csproj", "{8BE0C31F-8850-4D36-899F-8C86044DA19B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD30A04C-14F5-4CB9-A08A-105B6F2D59C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BE0C31F-8850-4D36-899F-8C86044DA19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BE0C31F-8850-4D36-899F-8C86044DA19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BE0C31F-8850-4D36-899F-8C86044DA19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BE0C31F-8850-4D36-899F-8C86044DA19B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

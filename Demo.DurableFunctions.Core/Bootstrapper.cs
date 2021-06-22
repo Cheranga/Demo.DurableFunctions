@@ -1,4 +1,5 @@
 using Demo.DurableFunctions.Core.Application.Services;
+using Demo.DurableFunctions.Core.Domain.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,10 +7,12 @@ namespace Demo.DurableFunctions.Core
 {
     public static class Bootstrapper
     {
-        public static void RegisterCoreServices(this IServiceCollection services)
+        public static IServiceCollection RegisterCoreServices(this IServiceCollection services)
         {
             RegisterValidators(services);
             RegisterServices(services);
+
+            return services;
         }
 
         private static void RegisterValidators(IServiceCollection services)

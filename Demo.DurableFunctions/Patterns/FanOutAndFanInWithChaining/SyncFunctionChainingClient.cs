@@ -1,6 +1,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using Demo.DurableFunctions.Core.Application.Responses;
+using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.ResponseFormatters;
 using Demo.DurableFunctions.Services;
 using Microsoft.AspNetCore.Mvc;

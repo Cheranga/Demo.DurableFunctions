@@ -1,7 +1,8 @@
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Demo.DurableFunctions.Core.Application.Requests;
-using Demo.DurableFunctions.DataAccess.Models;
+using Demo.DurableFunctions.Core.Application.DataAccess;
+using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
@@ -11,24 +12,30 @@ namespace Demo.DurableFunctions.Functions.Activities
     public class CreateCustomerActivity
     {
         private readonly IMapper mapper;
+        private readonly ICommandHandler<CreateCustomerCommand> commandHandler;
 
-        public CreateCustomerActivity(IMapper mapper)
+        public CreateCustomerActivity(IMapper mapper, ICommandHandler<CreateCustomerCommand> commandHandler)
         {
             this.mapper = mapper;
+            this.commandHandler = commandHandler;
         }
         
         [FunctionName(nameof(CreateCustomerActivity))]
-        public async Task<CustomerData> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context,
-            [Table("%DatabaseConfig:CustomersTable%")]IAsyncCollector<CustomerDataModel> customers)
+        public async Task<CustomerData> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context)
         {
             var request = context.GetInput<CreateCustomerRequest>();
-            var model = mapper.Map<CustomerDataModel>(request);
+            var command = mapper.Map<CreateCustomerCommand>(request);
 
-            await customers.AddAsync(model);
+            var operation = await commandHandler.ExecuteAsync(command, new CancellationToken());
+            if (!operation.Status)
+            {
+                // TODO: Resturn `Result<T>`
+                return null;
+            }
 
             return new CustomerData
             {
-                Id = model.CustomerId,
+                Id = command.CustomerId,
                 Email = request.CustomerEmail
             };
 

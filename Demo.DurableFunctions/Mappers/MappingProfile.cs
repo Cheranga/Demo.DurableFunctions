@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
-using Demo.DurableFunctions.Core.Application.Requests;
-using Demo.DurableFunctions.DataAccess.Models;
+using Demo.DurableFunctions.Core.Application.DataAccess;
+using Demo.DurableFunctions.Core.Domain.Requests;
 
 namespace Demo.DurableFunctions.Mappers
 {
@@ -11,37 +11,28 @@ namespace Demo.DurableFunctions.Mappers
         {
             CreateMap<RegisterAccountRequest, CreateBankAccountRequest>();
             CreateMap<RegisterAccountRequest, CreateCustomerRequest>();
-
-            MapToCustomerDataModelFromCreateCustomerRequest();
-            MapToBankAccountDataModelFromCreateBankAccountRequest();
-
             CreateMap<RegisterAccountRequest, CheckVisaRequest>();
             CreateMap<RegisterAccountRequest, CheckDriverLicenseRequest>();
+            
+            CreateMap<UpdateCustomerRequest, UpdateCustomerCommand>();
+            MapToCreateCustomerCommandFromCreateCustomerRequest();
+            MapToUpdateBankAccountCommandFromCreateBankAccountRequest();
         }
 
-        private void MapToBankAccountDataModelFromCreateBankAccountRequest()
+        private void MapToUpdateBankAccountCommandFromCreateBankAccountRequest()
         {
-            CreateMap<CreateBankAccountRequest, BankAccountDataModel>()
-                .ForMember(x => x.BankAccountId, x => x.MapFrom(y=>Guid.NewGuid().ToString("N").ToUpper()))
-                .ForMember(x => x.Amount, x => x.MapFrom(y => y.Deposit))
-                .AfterMap((request, model) =>
-                {
-                    model.PartitionKey = $"{request.CustomerId}".ToUpper();
-                    model.RowKey = $"{request.BankAccountType}_{model.BankAccountId}".ToUpper();
-                });
+            CreateMap<CreateBankAccountRequest, CreateBankAccountCommand>()
+                .ForMember(x => x.BankAccountId, x => x.MapFrom(y => Guid.NewGuid().ToString("N").ToUpper()))
+                .ForMember(x => x.Amount, x => x.MapFrom(y => y.Deposit));
+
         }
 
-        private void MapToCustomerDataModelFromCreateCustomerRequest()
+        private void MapToCreateCustomerCommandFromCreateCustomerRequest()
         {
-            CreateMap<CreateCustomerRequest, CustomerDataModel>()
-                .ForMember(x => x.CustomerId, x => x.MapFrom(y=>Guid.NewGuid().ToString("N").ToUpper()))
+            CreateMap<CreateCustomerRequest, CreateCustomerCommand>()
+                .ForMember(x => x.CustomerId, x => x.MapFrom(y => Guid.NewGuid().ToString("N").ToUpper()))
                 .ForMember(x => x.Email, x => x.MapFrom(y => y.CustomerEmail))
-                .ForMember(x => x.Name, x => x.MapFrom(y => y.CustomerName))
-                .AfterMap((request, model) =>
-                {
-                    model.PartitionKey = $"ACTIVE_{model.CustomerId}".ToUpper();
-                    model.RowKey = $"{model.CustomerId}".ToUpper();
-                });
+                .ForMember(x => x.Name, x => x.MapFrom(y => y.CustomerName));
         }
     }
 }

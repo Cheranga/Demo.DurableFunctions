@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Demo.DurableFunctions.Core.Application.Requests;
+using Demo.DurableFunctions.Core.Domain.Requests;
+using Demo.DurableFunctions.Core.Domain.Services;
 
 namespace Demo.DurableFunctions.Core.Application.Services
 {

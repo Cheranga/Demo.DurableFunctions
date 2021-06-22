@@ -1,4 +1,4 @@
-using Demo.DurableFunctions.Core.Application.Requests;
+using Demo.DurableFunctions.Core.Domain.Requests;
 
 namespace Demo.DurableFunctions.Models
 {

@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.DurableFunctions.Core;
-using Demo.DurableFunctions.Core.Application.Requests;
-using Demo.DurableFunctions.Core.Application.Responses;
+using Demo.DurableFunctions.Core.Domain.Requests;
+using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.Exceptions;
 using Demo.DurableFunctions.Extensions;
 using Demo.DurableFunctions.Functions.Activities;
