@@ -50,7 +50,7 @@ namespace Demo.DurableFunctions.Services
             }
 
             await client.TerminateAsync(instanceId, "Timeout occured");
-            return Result<RegisterAccountResponse>.Failure("Timeout");
+            return Result<RegisterAccountResponse>.Failure("Timeout", "couldn't register the account in the given time frame");
         }
     }
 }

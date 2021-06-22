@@ -13,9 +13,12 @@ namespace Demo.DurableFunctions.Core
             return new Result();
         }
 
-        public static Result Failure(string errorCode)
+        public static Result Failure(string errorCode, string errorMessage)
         {
-            return Failure(errorCode, new ValidationResult(new[] {new ValidationFailure(errorCode, errorCode)}));
+            return Failure(errorCode, new ValidationResult(new[] {new ValidationFailure("", errorMessage)
+            {
+                ErrorCode = errorCode
+            }}));
         }
 
         public static Result Failure(string errorCode, ValidationResult validationResult)
@@ -46,11 +49,14 @@ namespace Demo.DurableFunctions.Core
             };
         }
 
-        public static Result<TData> Failure(string errorCode)
+        public static Result<TData> Failure(string errorCode, string errorMessage)
         {
             return Failure(errorCode, new ValidationResult(new[]
             {
-                new ValidationFailure(errorCode, errorCode)
+                new ValidationFailure("", errorMessage)
+                {
+                    ErrorCode = errorCode
+                }
             }));
         }
 

@@ -19,7 +19,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             var otcCodeOperation = await context.CallActivityAsync<Result<string>>(nameof(SmsOtcCodeGeneratorActivity), null);
             if (!otcCodeOperation.Status)
             {
-                return Result<VerifyUserSmsOtcResponse>.Failure("OTCCodeGeneration");
+                return Result<VerifyUserSmsOtcResponse>.Failure("OTCCodeGeneration", "error occurred when generating OTC");
             }
             
             var operation = await HandleOtcWithAttemptsAsync(context, otcCodeOperation.Data, request);
@@ -45,7 +45,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
 
                     if (winner == timeoutTask)
                     {
-                        return Result<VerifyUserSmsOtcResponse>.Failure("OTCTimeout");
+                        return Result<VerifyUserSmsOtcResponse>.Failure("OTCTimeout", "Timeout occurred when sending OTC");
                     }
                     
                     var actualChallengeCode = challengeResponseTask.Result.Code;
@@ -72,7 +72,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                         var warningOperation = await SendSmsAsync(context, request.Mobile, expectedChallengeCode, $"You have only {numOfAttempts - (attempts)} attempts left. ");
                         if (!warningOperation.Status)
                         {
-                            return Result<VerifyUserSmsOtcResponse>.Failure("OTCResendFailure");
+                            return Result<VerifyUserSmsOtcResponse>.Failure("OTCResendFailure", "OTC sending failure");
                         }
                     }
                 }
@@ -81,7 +81,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             }
 
             await SendFeedBackMessageAsync(context, request);
-            return Result<VerifyUserSmsOtcResponse>.Failure("MaxOTCAttemptsReached");
+            return Result<VerifyUserSmsOtcResponse>.Failure("MaxOTCAttemptsReached", "Maximum allowed OTC attempts reached");
         }
 
         private async Task SendFeedBackMessageAsync(IDurableOrchestrationContext context, SendOtcRequest request)

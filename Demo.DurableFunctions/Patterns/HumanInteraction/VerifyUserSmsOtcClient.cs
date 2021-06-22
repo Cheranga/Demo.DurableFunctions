@@ -6,6 +6,7 @@ using System.Web.Http;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
 using Demo.DurableFunctions.DTO.Responses;
+using Demo.DurableFunctions.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
@@ -33,8 +34,16 @@ namespace Demo.DurableFunctions.Patterns.HumanInteraction
             var orchestratorStatus = await client.GetStatusAsync(instanceId, false, false, false);
             if (orchestratorStatus.RuntimeStatus == OrchestrationRuntimeStatus.Completed)
             {
-                var response = orchestratorStatus.Output.ToObject<Result<VerifyUserSmsOtcResponse>>();
-                return new OkObjectResult(response);
+                var operation = orchestratorStatus.Output.ToObject<Result<VerifyUserSmsOtcResponse>>();
+                if (operation.Status)
+                {
+                    return new OkObjectResult(operation.Data);
+                }
+
+                return new ObjectResult(operation.ToErrorResponse())
+                {
+                    StatusCode = (int) (HttpStatusCode.InternalServerError)
+                };
             }
             await client.RaiseEventAsync(instanceId, "SmsChallengeResponse", verifyUserSmsOtcRequest);
 

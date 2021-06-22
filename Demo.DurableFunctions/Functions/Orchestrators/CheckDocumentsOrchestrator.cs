@@ -27,7 +27,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             {
                 await context.CreateTimer(context.CurrentUtcDateTime.AddSeconds(2), CancellationToken.None);
                 context.ContinueAsNew(request);
-                return Result.Failure(operation.ErrorCode);
+                return Result.Failure(operation.ErrorCode, operation.ValidationResult);
             }
 
             var remainingDocumentCount = operation.Data;

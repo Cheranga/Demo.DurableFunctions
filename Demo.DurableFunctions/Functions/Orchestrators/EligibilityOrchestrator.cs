@@ -49,15 +49,15 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
 
                 if (!checkVisaOperation.Status)
                 {
-                    return Result.Failure("InvalidVisa");
+                    return Result.Failure("InvalidVisa", "invalid visa");
                 }
 
-                return Result.Failure("InvalidDriverLicense");
+                return Result.Failure("InvalidDriverLicense", "invalid driver license");
             }
             catch (Exception exception)
             {
                 logger.LogError(exception, "Error occured when checking for eligibility");
-                return Result.Failure("EligibilityError");
+                return Result.Failure("EligibilityError", "cannot verify eligibility");
             }
         }
     }

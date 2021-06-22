@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using FluentValidation.Results;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
 namespace Demo.DurableFunctions.Extensions

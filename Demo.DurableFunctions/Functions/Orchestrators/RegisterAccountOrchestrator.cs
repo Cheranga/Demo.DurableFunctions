@@ -57,12 +57,12 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                 var checkDriverLicenseOperation = checkDriverLicenseTask.Result;
                 if (!checkVisaOperation.Status)
                 {
-                    return Result<RegisterAccountResponse>.Failure("InvalidVisa");
+                    return Result<RegisterAccountResponse>.Failure("InvalidVisa", "invalid visa");
                 }
                 
                 if (!checkDriverLicenseOperation.Status)
                 {
-                    return Result<RegisterAccountResponse>.Failure("InvalidDriverLicense");
+                    return Result<RegisterAccountResponse>.Failure("InvalidDriverLicense", "invalid driver license");
                 }
                 // Comment end
                 
@@ -84,7 +84,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                 // throw new CustomerAccountOrchestratorException(context.InstanceId);
 
                 var errorCode = exception.InnerException.GetType() == typeof(CreateCustomerException) ? "CreateCustomerError" : "CreateBankAccountError";
-                return Result<RegisterAccountResponse>.Failure(errorCode);
+                return Result<RegisterAccountResponse>.Failure(errorCode, exception.InnerException.Message);
             }
         }
 

@@ -32,7 +32,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                 await context.CreateTimer(context.CurrentUtcDateTime.AddSeconds(2), CancellationToken.None);
             }
 
-            return Result.Failure("LateDocumentSubmission");
+            return Result.Failure("LateDocumentSubmission", "late document submission");
         }
     }
 }

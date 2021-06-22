@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.DTO.Responses;
 using Demo.DurableFunctions.Functions.Orchestrators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -31,7 +32,12 @@ namespace Demo.DurableFunctions.Patterns.HumanInteraction
             
             await client.StartNewAsync(nameof(SmsOtcOrchestrator),instanceId, sendOtcCodeRequest);
 
-            return new OkObjectResult(instanceId);
+            var response = new SendOtcResponse
+            {
+                InstanceId = instanceId
+            };
+            
+            return new OkObjectResult(response);
         }
         
     }

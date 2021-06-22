@@ -1,7 +1,9 @@
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.DTO.Responses;
 using Demo.DurableFunctions.Functions.Orchestrators;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +35,17 @@ namespace Demo.DurableFunctions.Patterns.FanOutAndFanInWithChaining
             {
                 return new BadRequestObjectResult(validationResult);
             }
-            
+
             var instanceId = await client.StartNewAsync(Orchestrator, registerBankCustomerRequest);
-            return new OkObjectResult(instanceId);
+            var response = new RegisterAccountResponse
+            {
+                InstanceId = instanceId
+            };
+
+            return new ObjectResult(response)
+            {
+                StatusCode = (int) HttpStatusCode.Accepted
+            };
         }
     }
 }
