@@ -8,3 +8,9 @@ Demo.DurableFunctions.Core/obj/Debug/netcoreapp3.1/
 Demo.DurableFunctions.Core/obj/
 
 Demo.DurableFunctions.Core/bin/Debug/netcoreapp3.1/
+
+Demo.DurableFunctions.Infrastructure.DataAccess/bin/Debug/netcoreapp3.1/
+
+Demo.DurableFunctions.Infrastructure.DataAccess/obj/Debug/netcoreapp3.1/
+
+Demo.DurableFunctions.Infrastructure.DataAccess/obj/
