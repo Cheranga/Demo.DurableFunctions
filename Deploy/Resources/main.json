@@ -179,6 +179,9 @@
                     },
                     "twilioFrom": {
                         "value": "[parameters('twilio.From')]"
+                    },
+                    "databaseConnectionString": {
+                        "value": "[reference(variables('storageAccountDeployment')).outputs.storageAccountConnectionString.value]"
                     }
                 },
                 "dependsOn": [
