@@ -6,6 +6,7 @@
 
 Durable Functions is an extension of Azure Functions that lets you write stateful functions in a serverless compute environment. The extension lets you define stateful workflows by writing orchestrator functions and stateful entities by writing entity functions using the Azure Functions programming model. Behind the scenes, the extension manages state, checkpoints, and restarts for you, allowing you to focus on your business logic.
 
+---
 ## :zap: Durable function types
 There are four different durable function types.
 
@@ -47,21 +48,24 @@ Unlike orchestrator functions, activity functions aren't restricted in the type 
 
 Entity functions define operations for reading and updating small pieces of state. We often refer to these stateful entities as durable entities. Like orchestrator functions, entity functions are functions with a special trigger type, entity trigger. They can also be invoked from client functions or from orchestrator functions. Unlike orchestrator functions, entity functions do not have any specific code constraints. Entity functions also manage state explicitly rather than implicitly representing state via control flow.
 
-## :zap: Comparing Azure Durable Functions
-
-https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-apps-ms-flow-webjobs#compare-azure-functions-and-azure-logic-apps
-
-
+---
 ## :zap: Azure durable function patterns
 
 ### :zap: Function chaining
 
 [Read more](FunctionChaining.md)
 
+---
+### :zap: Human interaction
+
+[Read more](OTC.md)
+
+---
 ### :zap: Async HTTP APIs
 
 ![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/feature/Demo/Images/asynchttpapi.png "async http api")
 
+---
 ### :zap: Eternal (conditionally if required) orchestrators
 
 Eternal orchestrations are orchestrator functions that never end. 
@@ -75,12 +79,7 @@ This history grows continuously as long as the orchestrator function continues t
 If the orchestrator function goes into an infinite loop and continuously schedules work, this history could grow critically large and cause significant performance problems. 
 The eternal orchestration concept was designed to mitigate these kinds of problems for applications that need infinite loops.
 
-
-### :zap: Human interaction
-
-[Read more](OTC.md)
-
-
+---
 ### :zap: Durable functions behind the scenes
 
 * The default configuration for Durable Functions stores this runtime state in an Azure storage account.
@@ -129,7 +128,7 @@ The eternal orchestration concept was designed to mitigate these kinds of proble
   To achieve this constraint, each orchestration instance or entity is assigned to a single control queue. 
   These control queues are load balanced across workers to ensure that each queue is only processed by one worker at a time.
 
-
+---
 ## :zap: Azure durable function runtime status
 
 These are the Azure durable orchestrator function status
@@ -143,7 +142,13 @@ These are the Azure durable orchestrator function status
 * Terminated
 
 https://docs.microsoft.com/en-us/javascript/api/durable-functions/orchestrationruntimestatus?view=azure-node-latest
-  
+
+---
+## :zap: Comparing Azure Durable Functions
+
+https://docs.microsoft.com/en-us/azure/azure-functions/functions-compare-logic-apps-ms-flow-webjobs#compare-azure-functions-and-azure-logic-apps
+
+---
 ### :zap: References
 :white_check_mark:]  Azure durable functions overview
   
