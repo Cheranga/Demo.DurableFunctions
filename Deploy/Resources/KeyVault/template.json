@@ -25,6 +25,10 @@
         "twilioFrom":{
             "type": "securestring",
             "defaultValue": "tbd"
+        },
+        "databaseConnectionString":{
+            "type": "securestring",
+            "defaultValue": "tbd"
         }
     },    
     "variables": {
@@ -100,7 +104,18 @@
                     "properties": {
                         "value": "[parameters('twilioFrom')]"
                     }
-                }                                     
+                },
+                {
+                    "type": "secrets",
+                    "name": "databaseConnectionString",
+                    "apiVersion": "2016-10-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('databaseConnectionString')]"
+                    }
+                }
             ]
         }
     ],

@@ -1,5 +1,5 @@
 using System;
-using Demo.DurableFunctions.DTO.Requests;
+using Demo.DurableFunctions.Core.Domain.Requests;
 
 namespace Demo.DurableFunctions.Exceptions
 {

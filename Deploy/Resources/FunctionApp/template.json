@@ -40,6 +40,7 @@
         "twilioSid": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioSid/)')]",
         "twilioAuthToken": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioAuthToken/)')]",
         "twilioFrom": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioFrom/)')]",
+        "databaseConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/databaseConnectionString/)')]",
         "timeZone": "AUS Eastern Standard Time"
     },
     "resources": [
@@ -79,7 +80,8 @@
                     "properties": {  
                         "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
                         "TwilioSmsConfig:AuthToken": "[variables('twilioAuthToken')]",
-                        "TwilioSmsConfig:From": "[variables('twilioFrom')]", 
+                        "TwilioSmsConfig:From": "[variables('twilioFrom')]",
+                        "DatabaseConfig:ConnectionString": "[variables('databaseConnectionString')]",
                         "DatabaseConfig:BankAccountsTable": "BankAccounts",
                         "DatabaseConfig:CustomersTable": "Customers",
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",
@@ -123,7 +125,8 @@
                     "properties": {  
                         "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
                         "TwilioSmsConfig:AuthToken": "[variables('twilioAuthToken')]",
-                        "TwilioSmsConfig:From": "[variables('twilioFrom')]", 
+                        "TwilioSmsConfig:From": "[variables('twilioFrom')]",
+                        "DatabaseConfig:ConnectionString": "[variables('databaseConnectionString')]",
                         "DatabaseConfig:BankAccountsTable": "BankAccounts",
                         "DatabaseConfig:CustomersTable": "Customers",                         
                         "AzureWebJobsStorage": "[parameters('storageAccountConnectionString')]",

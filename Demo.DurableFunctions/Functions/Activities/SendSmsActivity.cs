@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Demo.DurableFunctions.Core;
-using Demo.DurableFunctions.DTO.Requests;
-using Demo.DurableFunctions.DTO.Responses;
+using Demo.DurableFunctions.Core.Domain;
+using Demo.DurableFunctions.Core.Domain.Requests;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Twilio.Rest.Api.V2010.Account;

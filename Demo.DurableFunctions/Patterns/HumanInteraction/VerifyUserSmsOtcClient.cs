@@ -1,12 +1,12 @@
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Demo.DurableFunctions.Core;
-using Demo.DurableFunctions.DTO.Requests;
-using Demo.DurableFunctions.DTO.Responses;
+using Demo.DurableFunctions.Core.Domain;
+using Demo.DurableFunctions.Core.Domain.Requests;
+using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.Extensions;
+using Demo.DurableFunctions.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;

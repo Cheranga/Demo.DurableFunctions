@@ -1,8 +1,9 @@
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Demo.DurableFunctions.DataAccess.Models;
-using Demo.DurableFunctions.DTO.Requests;
-using Demo.DurableFunctions.Models;
+using Demo.DurableFunctions.Core.Application.DataAccess;
+using Demo.DurableFunctions.Core.Domain.Models;
+using Demo.DurableFunctions.Core.Domain.Requests;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
@@ -11,24 +12,30 @@ namespace Demo.DurableFunctions.Functions.Activities
     public class CreateCustomerActivity
     {
         private readonly IMapper mapper;
+        private readonly ICommandHandler<CreateCustomerCommand> commandHandler;
 
-        public CreateCustomerActivity(IMapper mapper)
+        public CreateCustomerActivity(IMapper mapper, ICommandHandler<CreateCustomerCommand> commandHandler)
         {
             this.mapper = mapper;
+            this.commandHandler = commandHandler;
         }
         
         [FunctionName(nameof(CreateCustomerActivity))]
-        public async Task<CustomerData> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context,
-            [Table("%DatabaseConfig:CustomersTable%")]IAsyncCollector<CustomerDataModel> customers)
+        public async Task<Customer> RegisterCustomerAsync([ActivityTrigger] IDurableActivityContext context)
         {
             var request = context.GetInput<CreateCustomerRequest>();
-            var model = mapper.Map<CustomerDataModel>(request);
+            var command = mapper.Map<CreateCustomerCommand>(request);
 
-            await customers.AddAsync(model);
-
-            return new CustomerData
+            var operation = await commandHandler.ExecuteAsync(command, new CancellationToken());
+            if (!operation.Status)
             {
-                Id = model.CustomerId,
+                // TODO: Resturn `Result<T>`
+                return null;
+            }
+
+            return new Customer
+            {
+                Id = command.CustomerId,
                 Email = request.CustomerEmail
             };
 
