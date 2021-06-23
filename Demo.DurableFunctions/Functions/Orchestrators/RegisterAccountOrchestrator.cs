@@ -1,6 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Constants;
 using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Models;
 using Demo.DurableFunctions.Core.Domain.Requests;
@@ -18,12 +19,10 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
     {
         private const string CreateCustomer = nameof(CreateCustomerActivity);
         private const string CreateBankAccount = nameof(CreateBankAccountActivity);
-        private const string CheckVisa = nameof(CheckVisaActivity);
-        private const string CheckDriverLicense = nameof(CheckDriverLicenseActivity);
         private const string CheckEligibility = nameof(EligibilityOrchestrator);
-        
-        private readonly IMapper mapper;
+
         private readonly ILogger<RegisterAccountOrchestrator> logger;
+        private readonly IMapper mapper;
 
         public RegisterAccountOrchestrator(IMapper mapper, ILogger<RegisterAccountOrchestrator> logger)
         {
@@ -34,44 +33,25 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
         [FunctionName(nameof(RegisterAccountOrchestrator))]
         public async Task<Result<RegisterAccountResponse>> HandleCustomerAccountAsync([OrchestrationTrigger] IDurableOrchestrationContext context)
         {
+            var request = context.GetInput<RegisterAccountRequest>();
+
+            var eligibilityOperation = await context.CallSubOrchestratorAsync<Result>(CheckEligibility, request);
+            if (!eligibilityOperation.Status)
+            {
+                return Result<RegisterAccountResponse>.Failure(eligibilityOperation.ErrorCode, eligibilityOperation.ValidationResult);
+            }
+
             try
             {
-                var request = context.GetInput<RegisterAccountRequest>();
-
-                // Uncomment this for sub orchestration
-                // var eligibilityOperation = await context.CallSubOrchestratorAsync<Result>(CheckEligibility, request);
-                // if (!eligibilityOperation.Status)
-                // {
-                //     return Result<RegisterAccountResponse>.Failure(eligibilityOperation.ErrorCode);
-                // }
-                
-                // Comment this for sub orchestration
-                var checkVisaRequest = mapper.Map<CheckVisaRequest>(request);
-                var checkDriverLicenseRequest = mapper.Map<CheckDriverLicenseRequest>(request);
-                // Fan-out
-                var checkVisaTask = context.CallActivityAsync<Result>(CheckVisa, checkVisaRequest);
-                var checkDriverLicenseTask = context.CallActivityAsync<Result>(CheckDriverLicense, checkDriverLicenseRequest);
-                await Task.WhenAll(checkVisaTask, checkDriverLicenseTask);
-                
-                // Fan-in
-                var checkVisaOperation = checkVisaTask.Result;
-                var checkDriverLicenseOperation = checkDriverLicenseTask.Result;
-                if (!checkVisaOperation.Status)
-                {
-                    return Result<RegisterAccountResponse>.Failure("InvalidVisa", "invalid visa");
-                }
-                
-                if (!checkDriverLicenseOperation.Status)
-                {
-                    return Result<RegisterAccountResponse>.Failure("InvalidDriverLicense", "invalid driver license");
-                }
-                // Comment end
-                
-                var customerData = await RegisterAndGetCustomerData(context, request);
-                var bankAccountData = await RegisterAndGetBankAccountData(context, request, customerData.Id);
+                //
+                // Function chaining
+                //
+                var customerData = await RegisterCustomerAsync(context, request);
+                var bankAccountData = await RegisterBankAccountAsync(context, request, customerData.Id);
 
                 var response = new RegisterAccountResponse
                 {
+                    InstanceId = context.InstanceId,
                     CustomerId = customerData.Id,
                     AccountId = bankAccountData.Id
                 };
@@ -80,16 +60,20 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             }
             catch (FunctionFailedException exception)
             {
-                // You can choose to select to throw an exception or return a result. If you return a result the orchestrator sets the status as `Completed`, else it'll set it's status as `Failed`.
-                // In here I have chosen to return a status object.
-                // throw new CustomerAccountOrchestratorException(context.InstanceId);
+                Log(context, LogLevel.Error, exception.Message);
+                
+                var errorCode = exception.InnerException.GetType() == typeof(CreateCustomerException) ? ErrorCodes.CreateCustomerError : ErrorCodes.CreateBankAccountError;
+                return Result<RegisterAccountResponse>.Failure(errorCode, exception.Message);
+            }
+            catch (Exception exception)
+            {
+                Log(context, LogLevel.Error, exception.Message);
 
-                var errorCode = exception.InnerException.GetType() == typeof(CreateCustomerException) ? "CreateCustomerError" : "CreateBankAccountError";
-                return Result<RegisterAccountResponse>.Failure(errorCode, exception.InnerException.Message);
+                return Result<RegisterAccountResponse>.Failure(ErrorCodes.RegisterAccountError, ErrorMessages.RegisterAccountError);
             }
         }
 
-        private async Task<BankAccount> RegisterAndGetBankAccountData(IDurableOrchestrationContext context, RegisterAccountRequest request, string customerId)
+        private async Task<BankAccount> RegisterBankAccountAsync(IDurableOrchestrationContext context, RegisterAccountRequest request, string customerId)
         {
             Log(context, LogLevel.Information, "Registering bank account @{RegisterAccountRequest}", request);
 
@@ -101,13 +85,14 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             return bankAccountData;
         }
 
-        private async Task<Customer> RegisterAndGetCustomerData(IDurableOrchestrationContext context, RegisterAccountRequest request)
+        private async Task<Customer> RegisterCustomerAsync(IDurableOrchestrationContext context, RegisterAccountRequest request)
         {
-            Log(context, LogLevel.Information,"Registering customer @{RegisterCustomerRequest}", request);
+            Log(context, LogLevel.Information, "Registering customer @{RegisterCustomerRequest}", request);
+            
             var createCustomerRequest = mapper.Map<CreateCustomerRequest>(request);
             var customerData = await context.CallActivityWithRetryAsync<Customer>(CreateCustomer, Retry.For<CreateCustomerException>(), createCustomerRequest);
-            
-            Log(context, LogLevel.Information,"Successfully registered customer @{RegisterCustomerRequest}", request);
+
+            Log(context, LogLevel.Information, "Successfully registered customer @{RegisterCustomerRequest}", request);
             return customerData;
         }
 

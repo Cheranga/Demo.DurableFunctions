@@ -27,13 +27,6 @@ namespace Demo.DurableFunctions.Functions.Activities
             var request = context.GetInput<UpdateCustomerRequest>();
             var command = mapper.Map<UpdateCustomerCommand>(request);
 
-            // var customerDataModel = new CustomerDataModel
-            // {
-            //     PartitionKey = $"ACTIVE_{request.CustomerId}".ToUpper(),
-            //     RowKey = $"{request.CustomerId}".ToUpper(),
-            //     MobileVerified = request.MobileVerified
-            // };
-
             var operation = await commandHandler.ExecuteAsync(command, new CancellationToken());
             return operation;
         }

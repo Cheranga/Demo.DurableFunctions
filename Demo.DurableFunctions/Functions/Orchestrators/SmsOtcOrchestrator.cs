@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Demo.DurableFunctions.Core;
+using Demo.DurableFunctions.Constants;
 using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Core.Domain.Responses;
@@ -20,9 +20,9 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             var otcCodeOperation = await context.CallActivityAsync<Result<string>>(nameof(SmsOtcCodeGeneratorActivity), null);
             if (!otcCodeOperation.Status)
             {
-                return Result<VerifyUserSmsOtcResponse>.Failure("OTCCodeGeneration", "error occurred when generating OTC");
+                return Result<VerifyUserSmsOtcResponse>.Failure(ErrorCodes.OTCCodeGeneration, ErrorMessages.OTCCodeGeneration);
             }
-            
+
             var operation = await HandleOtcWithAttemptsAsync(context, otcCodeOperation.Data, request);
             return operation;
         }
@@ -36,7 +36,7 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
                 {
                     return Result<VerifyUserSmsOtcResponse>.Failure(sendSmsOperation.ErrorCode, sendSmsOperation.ValidationResult);
                 }
-                
+
                 var timeoutTask = context.CreateTimer(context.CurrentUtcDateTime.AddSeconds(60), cancellationToken.Token);
 
                 for (var attempts = 1; attempts <= numOfAttempts; attempts++)
@@ -46,20 +46,25 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
 
                     if (winner == timeoutTask)
                     {
-                        return Result<VerifyUserSmsOtcResponse>.Failure("OTCTimeout", "Timeout occurred when sending OTC");
+                        return Result<VerifyUserSmsOtcResponse>.Failure(ErrorCodes.OTCTimeout, ErrorMessages.OTCTimeout);
                     }
-                    
+
                     var actualChallengeCode = challengeResponseTask.Result.Code;
                     if (string.Equals(expectedChallengeCode, actualChallengeCode))
                     {
                         cancellationToken.Cancel();
 
-                        await UpdateCustomerAsync(context, request.CustomerId);
-                        await context.CallActivityAsync<Result>(nameof(SendSmsActivity), new SendSmsRequest
+                        var updateOperation = await UpdateCustomerAsync(context, request.CustomerId);
+                        if (!updateOperation.Status)
                         {
-                            Mobile = request.Mobile,
-                            Message = "Thank you for your verification"
-                        });
+                            return Result<VerifyUserSmsOtcResponse>.Failure(updateOperation.ErrorCode, updateOperation.ValidationResult);
+                        }
+
+                        var sendAckOperation = await SendAcknowledgementAsync(context, request);
+                        if (!sendAckOperation.Status)
+                        {
+                            return Result<VerifyUserSmsOtcResponse>.Failure(sendSmsOperation.ErrorCode, sendAckOperation.ValidationResult);
+                        }
 
                         return Result<VerifyUserSmsOtcResponse>.Success(new VerifyUserSmsOtcResponse
                         {
@@ -70,10 +75,10 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
 
                     if (attempts != numOfAttempts)
                     {
-                        var warningOperation = await SendSmsAsync(context, request.Mobile, expectedChallengeCode, $"You have only {numOfAttempts - (attempts)} attempts left. ");
+                        var warningOperation = await SendSmsAsync(context, request.Mobile, expectedChallengeCode, $"You have only {numOfAttempts - attempts} attempts left. ");
                         if (!warningOperation.Status)
                         {
-                            return Result<VerifyUserSmsOtcResponse>.Failure("OTCResendFailure", "OTC sending failure");
+                            return Result<VerifyUserSmsOtcResponse>.Failure(ErrorCodes.SendSmsFailure, ErrorMessages.SendSmsFailure);
                         }
                     }
                 }
@@ -82,7 +87,18 @@ namespace Demo.DurableFunctions.Functions.Orchestrators
             }
 
             await SendFeedBackMessageAsync(context, request);
-            return Result<VerifyUserSmsOtcResponse>.Failure("MaxOTCAttemptsReached", "Maximum allowed OTC attempts reached");
+            return Result<VerifyUserSmsOtcResponse>.Failure(ErrorCodes.MaxOTCAttemptsReached, ErrorMessages.MaxOTCAttemptsReached);
+        }
+
+        private async Task<Result> SendAcknowledgementAsync(IDurableOrchestrationContext context, SendOtcRequest request)
+        {
+            var sendSmsRequest = new SendSmsRequest
+            {
+                Mobile = request.Mobile,
+                Message = "Thank you for your verification"
+            };
+            
+            return await context.CallActivityAsync<Result>(nameof(SendSmsActivity), sendSmsRequest);
         }
 
         private async Task SendFeedBackMessageAsync(IDurableOrchestrationContext context, SendOtcRequest request)
