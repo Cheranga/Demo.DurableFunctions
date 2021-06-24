@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Demo.DurableFunctions.Bindings;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.Core.Domain;
 using Demo.DurableFunctions.Core.Domain.Requests;
@@ -26,8 +27,14 @@ namespace Demo.DurableFunctions.Patterns.HumanInteraction
         [FunctionName(nameof(VerifyUserSmsOtcClient))]
         public async Task<IActionResult> VerifyUserSmsOtcAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "otc/verify")]
             HttpRequestMessage request,
+            [AzureAdToken("sms.verify","")]AzureAdToken token,
             [DurableClient] IDurableClient client)
         {
+            if (token == null)
+            {
+                return new UnauthorizedResult();
+            }
+            
             var verifyUserSmsOtcRequest = await requestBodyReader.GetModelAsync<VerifyUserSmsOtcRequest>(request);
             var instanceId = verifyUserSmsOtcRequest.Id;
 

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Demo.DurableFunctions.Bindings;
 using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.Functions.Orchestrators;
@@ -27,8 +28,15 @@ namespace Demo.DurableFunctions.Patterns.FanOutAndFanInWithChaining
 
         [FunctionName(nameof(AsyncFunctionChainingClient))]
         public async Task<IActionResult> FunctionChainingAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "chaining/async")]
-            HttpRequestMessage request, [DurableClient] IDurableOrchestrationClient client)
+            HttpRequestMessage request,
+            [AzureAdToken("create.user","")]AzureAdToken token,
+            [DurableClient] IDurableOrchestrationClient client)
         {
+            if (token == null)
+            {
+                return new UnauthorizedResult();
+            }
+            
             var registerBankCustomerRequest = await requestBodyReader.GetModelAsync<RegisterAccountRequest>(request);
             var validationResult = await validator.ValidateAsync(registerBankCustomerRequest);
             if (!validationResult.IsValid)

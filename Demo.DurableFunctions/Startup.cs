@@ -1,4 +1,5 @@
 using Demo.DurableFunctions;
+using Demo.DurableFunctions.Bindings;
 using Demo.DurableFunctions.Core;
 using Demo.DurableFunctions.Core.Application;
 using Demo.DurableFunctions.Core.Domain;
@@ -7,20 +8,25 @@ using Demo.DurableFunctions.Infrastructure.DataAccess;
 using Demo.DurableFunctions.ResponseFormatters;
 using Demo.DurableFunctions.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host.Bindings;
+using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Bootstrapper = Demo.DurableFunctions.Infrastructure.DataAccess.Bootstrapper;
 
-[assembly: FunctionsStartup(typeof(Startup))]
+// [assembly: FunctionsStartup(typeof(Startup))]
+[assembly: WebJobsStartup(typeof(Startup))]
 
 namespace Demo.DurableFunctions
 {
-    public class Startup : FunctionsStartup
+    public class Startup : IWebJobsStartup
     {
-        public override void Configure(IFunctionsHostBuilder builder)
+        public void Configure(IWebJobsBuilder builder)
         {
+            builder.UseAzureAdTokenBinding();
+            
             var services = builder.Services;
 
             var configuration = GetConfigurationRoot(builder);
@@ -53,7 +59,7 @@ namespace Demo.DurableFunctions
             return services;
         }
         
-        protected virtual IConfigurationRoot GetConfigurationRoot(IFunctionsHostBuilder builder)
+        protected virtual IConfigurationRoot GetConfigurationRoot(IWebJobsBuilder builder)
         {
             var services = builder.Services;
 

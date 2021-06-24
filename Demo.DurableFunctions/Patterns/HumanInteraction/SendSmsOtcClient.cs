@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Demo.DurableFunctions.Bindings;
 using Demo.DurableFunctions.Core.Domain.Requests;
 using Demo.DurableFunctions.Core.Domain.Responses;
 using Demo.DurableFunctions.Functions.Orchestrators;
@@ -23,8 +24,15 @@ namespace Demo.DurableFunctions.Patterns.HumanInteraction
         
         [FunctionName(nameof(SendSmsOtcClient))]
         public async Task<IActionResult> SendSmsOtcAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "otc/send")]
-            HttpRequestMessage request, [DurableClient]IDurableClient client)
+            HttpRequestMessage request, 
+            [AzureAdToken("sms.send","")]AzureAdToken token,
+            [DurableClient]IDurableClient client)
         {
+            if (token == null)
+            {
+                return new UnauthorizedResult();
+            }
+            
             var sendOtcCodeRequest = await requestBodyReader.GetModelAsync<SendOtcRequest>(request);
 
             var instanceId = Guid.NewGuid().ToString("N").ToUpper();
