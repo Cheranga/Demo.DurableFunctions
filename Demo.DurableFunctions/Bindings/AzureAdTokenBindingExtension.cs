@@ -19,9 +19,23 @@ namespace Demo.DurableFunctions.Bindings
             builder.AddExtension<AzureAdTokenBinding>();
             
             builder.Services.AddSingleton<ISecurityTokenValidator, JwtSecurityTokenHandler>();
-            builder.Services.AddSingleton<AzureAdTokenValidationService>();
+
+            if (IsLocal())
+            {
+                builder.Services.AddSingleton<IAzureAdTokenValidationService, DummyTokenValidationService>();
+            }
+            else
+            {
+                builder.Services.AddSingleton<IAzureAdTokenValidationService, AzureAdTokenValidationService>();
+            }
             
             return builder;
+        }
+
+        private static bool IsLocal()
+        {
+            var storageAccount = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+            return string.Equals(storageAccount, "UseDevelopmentStorage=true");
         }
     }
 }

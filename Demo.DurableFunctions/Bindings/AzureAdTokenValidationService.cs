@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Demo.DurableFunctions.Bindings
 {
-    public class AzureAdTokenValidationService
+    public class AzureAdTokenValidationService : IAzureAdTokenValidationService
     {
         private const string Authorization = nameof(Authorization);
         private const string Bearer = nameof(Bearer);

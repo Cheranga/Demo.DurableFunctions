@@ -10,10 +10,10 @@ namespace Demo.DurableFunctions.Bindings
     public class AzureAdTokenBinding : IExtensionConfigProvider
     {
         private const string AzureAd = nameof(AzureAd);
-        private readonly AzureAdTokenValidationService _customAuthorizationService;
+        private readonly IAzureAdTokenValidationService _customAuthorizationService;
         private readonly IConfiguration _configuration;
 
-        public AzureAdTokenBinding(AzureAdTokenValidationService customAuthorizationService, IConfiguration configuration)
+        public AzureAdTokenBinding(IAzureAdTokenValidationService customAuthorizationService, IConfiguration configuration)
         {
             _customAuthorizationService = customAuthorizationService;
             _configuration = configuration;
