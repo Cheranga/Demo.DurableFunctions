@@ -36,7 +36,9 @@
             "defaultValue": "tbd"
         }        
     },
-    "variables": {        
+    "variables": {
+        "azureTenantId": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/azureTenantId/)')]",
+        "azureAudience": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/azureAudience/)')]",
         "twilioSid": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioSid/)')]",
         "twilioAuthToken": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioAuthToken/)')]",
         "twilioFrom": "[concat('@Microsoft.KeyVault(SecretUri=https://', parameters('keyVaultName'), '.vault.azure.net/secrets/twilioFrom/)')]",
@@ -77,7 +79,12 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
                     ],
-                    "properties": {  
+                    "properties": {
+                        "AzureAd:TenantId":"[variables('azureTenantId')]",,
+                        "AzureAd:Instance":"https://login.microsoft.com/",
+                        "AzureAd:Audience":"[variables('azureAudience')]",,
+                        "AzureAd:Scopes":"access.demo.funky.dura",
+                        "AzureAd:Roles":"create.user, sms.send, sms.verify, orchestrator.get.status",
                         "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
                         "TwilioSmsConfig:AuthToken": "[variables('twilioAuthToken')]",
                         "TwilioSmsConfig:From": "[variables('twilioFrom')]",
@@ -122,7 +129,12 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/sites/Slots', parameters('functionAppName'), 'Staging')]"
                     ],
-                    "properties": {  
+                    "properties": {
+                        "AzureAd:TenantId":"[variables('azureTenantId')]",,
+                        "AzureAd:Instance":"https://login.microsoft.com/",
+                        "AzureAd:Audience":"[variables('azureAudience')]",,
+                        "AzureAd:Scopes":"access.demo.funky.dura",
+                        "AzureAd:Roles":"create.user, sms.send, sms.verify, orchestrator.get.status",
                         "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
                         "TwilioSmsConfig:AuthToken": "[variables('twilioAuthToken')]",
                         "TwilioSmsConfig:From": "[variables('twilioFrom')]",

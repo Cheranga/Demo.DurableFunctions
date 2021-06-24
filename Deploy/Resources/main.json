@@ -68,6 +68,14 @@
         "twilio.From":{
             "type": "securestring",
             "defaultValue": "tbd"
+        },
+        "azureTenantId":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        },
+        "azureAudience":{
+            "type": "securestring",
+            "defaultValue": "tbd"
         }
     },
     "variables": {
@@ -182,6 +190,12 @@
                     },
                     "databaseConnectionString": {
                         "value": "[reference(variables('storageAccountDeployment')).outputs.storageAccountConnectionString.value]"
+                    },
+                    "azureTenantId": {
+                        "value": "[parameters('azureTenantId')]"
+                    },
+                    "azureAudience": {
+                        "value": "[parameters('azureAudience')]"
                     }
                 },
                 "dependsOn": [

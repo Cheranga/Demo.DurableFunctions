@@ -29,6 +29,14 @@
         "databaseConnectionString":{
             "type": "securestring",
             "defaultValue": "tbd"
+        },
+        "azureTenantId":{
+            "type": "securestring",
+            "defaultValue": "tbd"
+        },
+        "azureAudience":{
+            "type": "securestring",
+            "defaultValue": "tbd"
         }
     },    
     "variables": {
@@ -114,6 +122,28 @@
                     ],
                     "properties": {
                         "value": "[parameters('databaseConnectionString')]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "name": "azureTenantId",
+                    "apiVersion": "2016-10-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('azureTenantId')]"
+                    }
+                },
+                {
+                    "type": "secrets",
+                    "name": "azureAudience",
+                    "apiVersion": "2016-10-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    ],
+                    "properties": {
+                        "value": "[parameters('azureAudience')]"
                     }
                 }
             ]
