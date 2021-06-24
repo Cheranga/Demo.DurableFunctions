@@ -80,9 +80,9 @@
                         "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
                     ],
                     "properties": {
-                        "AzureAd:TenantId":"[variables('azureTenantId')]",,
+                        "AzureAd:TenantId":"[variables('azureTenantId')]",
                         "AzureAd:Instance":"https://login.microsoft.com/",
-                        "AzureAd:Audience":"[variables('azureAudience')]",,
+                        "AzureAd:Audience":"[variables('azureAudience')]",
                         "AzureAd:Scopes":"access.demo.funky.dura",
                         "AzureAd:Roles":"create.user, sms.send, sms.verify, orchestrator.get.status",
                         "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
@@ -130,9 +130,9 @@
                         "[resourceId('Microsoft.Web/sites/Slots', parameters('functionAppName'), 'Staging')]"
                     ],
                     "properties": {
-                        "AzureAd:TenantId":"[variables('azureTenantId')]",,
+                        "AzureAd:TenantId":"[variables('azureTenantId')]",
                         "AzureAd:Instance":"https://login.microsoft.com/",
-                        "AzureAd:Audience":"[variables('azureAudience')]",,
+                        "AzureAd:Audience":"[variables('azureAudience')]",
                         "AzureAd:Scopes":"access.demo.funky.dura",
                         "AzureAd:Roles":"create.user, sms.send, sms.verify, orchestrator.get.status",
                         "TwilioSmsConfig:Sid":"[variables('twilioSid')]",
