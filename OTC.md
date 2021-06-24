@@ -4,7 +4,7 @@ Let's design an OTC sending requirement where the system sends a code to the use
 - The system will wait for 60 seconds for the user to respond back.
 - User will be given 3 attempts to enter the correct code.
 
-![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/feature/Demo/Images/otc.png "otc")
+![alt text](https://github.com/Cheranga/Demo.DurableFunctions/blob/feature/Demo/Images/otcflow.png "otc")
 
 <details>
 <summary>Mermaid diagram</summary>
